@@ -16,7 +16,6 @@ export default function Login() {
         if (data.otp === '1234') {
             //check user
             const res = await authUser({ phone: data.mobile })
-            console.log('res', res)
             if (res.data._id) {
                 login(res.data)
                 navigate('/dashboard', { replace: true })
@@ -33,9 +32,6 @@ export default function Login() {
 
     const btnProps = isOtpSent ? { btnHandler: submit, btnText: 'Submit' } : { btnHandler: sendOTP, btnText: 'Send Otp' }
 
-    if (user) {
-        return <Navigate to="/dashboard" replace />;
-    }
     return (
         <>
             <div className="mt-3">
@@ -58,9 +54,7 @@ export default function Login() {
                             onChange={(e) => changeHandler('otp', e.target.value)} />
                     </div>
                 }
-
                 <button type="button" onClick={btnProps.btnHandler} className="btn btn-primary">{btnProps.btnText}</button>
-
             </div>
         </>
     )

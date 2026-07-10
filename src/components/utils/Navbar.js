@@ -6,6 +6,7 @@ export default function Navbar(props) {
     const { user } = useAuth();
     const userNav = [{ name: 'Dashboard', key: 'dbh', path: '/dashboard' },
     { name: 'Trade History', key: 'th', path: '/trades' },
+    { name: 'Add Trade', key: 'adtr', path: '/trades/add' },
     { name: 'Accounts', key: 'acc', path: '/accounts' }];
     const defaultNav = [{ name: 'Login', path: '/' }, { name: 'Pricing', path: '/pricing' }, { name: 'About', path: '/about' }];
     const cls = `av-item nav-link`;

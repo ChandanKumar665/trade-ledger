@@ -1,4 +1,4 @@
-import Login from "../login";
+import Login from "../login/Login";
 import Navbar from "../utils/Navbar";
 
 export default function Home() {
