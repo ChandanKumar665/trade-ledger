@@ -1,8 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { routes } from './routes'
-import { useAuth } from './hooks/useAuth';
 import Login from './components/login/Login';
 import Trades from './components/trades/Trades';
 import Dashboard from './components/dashboard/Dashboard';
@@ -19,7 +17,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" path='/' element={<Login />} />
         </Route>
 
         {/* Protected Routes */}

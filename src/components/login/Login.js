@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useAuth } from "../../hooks/useAuth"
 import { useNavigate, Navigate } from "react-router-dom";
 import Navbar from "../utils/Navbar";
@@ -9,10 +9,8 @@ export default function Login() {
     const [isOtpSent, setIsOtpSend] = useState(false)
     const [data, setData] = useState({})
     const navigate = useNavigate();
-    // const [isLoggedIn, user] = useAuth()
 
     const submit = async (e) => {
-        console.log('inside submit', data)
         if (data.otp === '1234') {
             //check user
             const res = await authUser({ phone: data.mobile })

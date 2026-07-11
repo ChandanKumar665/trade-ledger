@@ -1,11 +1,9 @@
 import Navbar from "../utils/Navbar";
 import { useAuth } from "../../hooks/useAuth"
-import { useNavigate, Navigate } from "react-router-dom";
 import Chart from 'react-apexcharts'
 
 export default function Dashboard(props) {
     const { user, logout } = useAuth();
-    const navigate = useNavigate();
     const options = {
         options: {
             chart: {
@@ -40,15 +38,10 @@ export default function Dashboard(props) {
             }
         }
     }
-    const handleLogout = () => {
-        logout();
-        navigate('/')
-    }
 
     return <>
         <Navbar active_id='dbh' />
-        <div>
-            This is Dashboard
+        <div className="mt-2">
             <div className="container border border-dark rounded border-1 mb-2">
                 <Chart
                     options={options.options}
@@ -65,9 +58,7 @@ export default function Dashboard(props) {
                     width="500"
                 />
             </div>
-            <button className="btn btn-primary" onClick={handleLogout}>
-                Logout
-            </button>
+
         </div>
     </>
 }

@@ -4,6 +4,6 @@ import { useAuth } from "../src/hooks/useAuth";
 export default function PublicRoute() {
     const { user } = useAuth();
     return user
-        ? <Navigate to="/" replace />
+        ? <Navigate to="/dashboard" replace />
         : <Outlet />;
 }
