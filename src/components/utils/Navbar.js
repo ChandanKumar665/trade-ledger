@@ -1,25 +1,36 @@
 
+import { useEffect } from 'react';
 import logo from '../../asset/logo.png'
 import useAccount from '../../hooks/useAccount';
 import { useAuth } from '../../hooks/useAuth'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 export default function Navbar(props) {
-    const { user, logout } = useAuth();
+    const { user, logout, updateSelectedAccount, selectedAccId } = useAuth();
     const navigate = useNavigate();
     const { accountList } = useAccount();
 
     const userNav = [{ name: 'Dashboard', key: 'dbh', path: '/dashboard' },
     { name: 'Trade History', key: 'th', path: '/trades' },
     { name: 'Accounts', key: 'acc', path: '/accounts' }];
+
     const defaultNav = [{ name: 'Login', path: '/' }, { name: 'Pricing', path: '/pricing' }, { name: 'About', path: '/about' }];
     const cls = `av-item nav-link`;
     const finalNav = user ? userNav : defaultNav;
-    console.log('acc', accountList)
+
     const handleLogout = () => {
         logout();
         navigate('/')
     }
+    const accountSelectHandler = (e) => {
+        updateSelectedAccount(e.target.value)
+    }
+    useEffect(() => {
+        if (accountList.length > 0) {
+            updateSelectedAccount(selectedAccId || accountList[0]._id)
+        }
+    }, [accountList])
+
     return (
         <div className='mb-2'>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,15 +45,22 @@ export default function Navbar(props) {
                         {
                             finalNav.map((item, i) => {
                                 const isActive = item.key === props.active_id
-                                return <a key={i} className={`av-item nav-link ${!isActive ? 'active' : ''}`} href={item.path}>{item.name}</a>
+                                return <NavLink key={i} className={`av-item nav-link ${!isActive ? 'active' : ''}`} to={item.path}>{item.name}</NavLink>
                             })
                         }
                     </div>
                 </div>
                 <div className="d-flex p-2">
-                    <select className="form-select" aria-label="Default select example">
+                    {/* <label className="form-label">Account</label> */}
+                    <select className="form-select form-select-sm" aria-label="Default select example" onChange={accountSelectHandler}>
                         {
-                            accountList.map(account => <option key={account._id} value={account._id}>{account.name}</option>)
+                            accountList.map(account => <option
+                                key={account._id}
+                                value={account._id}
+                                selected={account._id === selectedAccId}
+                            >
+                                {account.name}
+                            </option>)
                         }
                     </select>
                 </div>

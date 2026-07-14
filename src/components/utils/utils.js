@@ -8,3 +8,7 @@ export function formattedCurrency(amount, curr) {
 export function captialize(input) {
     return input.toUpperCase()
 }
+
+export function formatDate(input) {
+    return new Date(input).toLocaleString()
+}

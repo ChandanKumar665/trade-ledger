@@ -1,62 +1,38 @@
 import Navbar from "../utils/Navbar";
-import { useAuth } from "../../hooks/useAuth"
-import Chart from 'react-apexcharts'
+import { useAuth } from "../../hooks/useAuth";
+import { Chart } from "react-google-charts";
 
 export default function Dashboard(props) {
     const { user, logout } = useAuth();
-    const options = {
-        options: {
-            chart: {
-                id: "basic-line"
-            },
-            xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', "Aug"]
-            }
-        },
-        series: [
-            {
-                name: "series-1",
-                data: [22000, 33000, 36000]
-            }
-        ]
-    };
-    const donutOptions = {
-        plotOptions: {
-            pie: {
-                donut: {
-                    labels: {
-                        show: true,
-                        value: {
-                            color: 'red'
-                        },
-                        total: {
-                            label: 145
-                        },
+    const data = [
+        ["Jun", "Sales"],
+        ["July", 1000,],
+        ["Aug", 1170,],
+        ["Sep", 660,],
+        ["Oct", 1030,],
+    ];
 
-                    }
-                }
-            }
-        }
-    }
+    const options = {
+        chart: {
+            title: "Trading Performance",
+            subtitle: "PnL",
+        },
+    };
 
     return <>
         <Navbar active_id='dbh' />
         <div className="mt-2">
             <div className="container border border-dark rounded border-1 mb-2">
                 <Chart
-                    options={options.options}
-                    series={options.series}
-                    type="line"
-                    width="800"
+                    chartType="Line"
+                    width="100%"
+                    height="400px"
+                    data={data}
+                    options={options}
                 />
             </div>
             <div className="container border border-dark rounded border-1 mb-2">
-                <Chart
-                    options={donutOptions}
-                    series={[10, 5]}
-                    type="donut"
-                    width="500"
-                />
+
             </div>
 
         </div>

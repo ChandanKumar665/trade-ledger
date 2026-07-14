@@ -11,7 +11,6 @@ export default function useAccount() {
         if (res?.statusCode === 200) {
             setAccountList(res.data)
         }
-        // return toast[res.type](res.message);
     }
     useEffect(() => {
         get()

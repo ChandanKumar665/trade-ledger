@@ -4,20 +4,21 @@ import { useAuth } from "../../hooks/useAuth"
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { getTradeList } from '../../services/trade'
-import { formattedCurrency } from "../utils/utils";
+import { formatDate, formattedCurrency } from "../utils/utils";
 import AddUpdateTrade from "./AddUpdateTrade";
 import DeleteTrade from "./DeleteTrade";
 import Actions from "../utils/Actions";
 
 export default function Trades() {
-    const { user, logout } = useAuth();
+    const { user, logout, selectedAccId } = useAuth();
     const navigate = useNavigate();
-    const thead = [{ name: 'Symbol' }, { name: 'Order Type' }, { name: 'Open' }, { name: 'Close' },
-    { name: 'Qty' }, { name: 'PnL' }, { name: 'Actions' }]
+    const thead = [{ name: 'Symbol' }, { name: 'Type' }, { name: 'Entry Time' }, { name: 'Exit Time' },
+    { name: 'Entry Price' }, { name: 'Exit Price' }, { name: 'PnL' }, { name: 'Actions' }]
     const [data, setData] = useState([])
     const [sync, setSync] = useState(false);
     const [deleteOps, setDeleteOps] = useState({});
     const [editOps, setEditOps] = useState({})
+
     const get = async (input) => {
         const res = await getTradeList(input);
         console.log('r', res)
@@ -34,9 +35,9 @@ export default function Trades() {
     }
     useEffect(() => {
         if (user) {
-            get({ user_id: user._id, account_id: '6a34360f3e5608da716decd4' })
+            get({ user_id: user._id, account_id: selectedAccId })
         }
-    }, [sync])
+    }, [sync, selectedAccId])
 
     return <>
         <Navbar active_id='th' />
@@ -79,14 +80,16 @@ export default function Trades() {
                                     view: true
                                 }
                             }
+                            const curr = item.curr[0].curr
                             return (
                                 <tr key={i}>
                                     <td>{item.symbol}</td>
                                     <td>{item.order_type}</td>
                                     <td>{item.open_time}</td>
                                     <td>{item?.close_time}</td>
-                                    <td>{item.qty}</td>
-                                    <td>{`${formattedCurrency(item.pnl, 'inr')}`}</td>
+                                    <td>{item.entry_price}</td>
+                                    <td>{item.exit_price}</td>
+                                    <td>{`${formattedCurrency(item.pnl, curr)}`}</td>
                                     <td>
                                         <Actions
                                             view={viewProps}

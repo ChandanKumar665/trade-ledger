@@ -4,11 +4,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { create, update } from "../../services/trade";
 
 export default function AddUpdateTrade(props) {
-    console.log(props)
     const { sync, setSync, edit, view, account_id, id, symbol, order_type, desc, open_time,
         close_time, entry_price, exit_price, qty, pnl, charges, setEditOps } = props
     const [data, setData] = useState({ order_type: 'buy' });
-    const { user } = useAuth();
+    const { user, selectedAccId } = useAuth();
 
     const modifyTrade = async () => {
         const payload = {
@@ -32,7 +31,7 @@ export default function AddUpdateTrade(props) {
         document.querySelector("#add_up_trade .btn-close").click();
     }
     const createTrade = async () => {
-        const res = await create({
+        const payload = {
             "symbol": data.symbol,
             "order_type": data.order_type,
             "desc": data.desc,
@@ -43,9 +42,10 @@ export default function AddUpdateTrade(props) {
             "qty": data.qty,
             "pnl": data.pnl,
             "charges": data.charges,
-            "account_id": "6a34360f3e5608da716decd4",
+            "account_id": selectedAccId,
             "user_id": user._id
-        });
+        }
+        const res = await create(payload);
         toast[res.type](res.message);
         setSync(!sync)
         document.querySelector("#add_up_trade .btn-close").click();
@@ -163,8 +163,10 @@ export default function AddUpdateTrade(props) {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Open Time:<span style={{ color: 'red' }}>*</span></label>
-                                <input type="text" className="form-control"
+                                <label className="form-label">Entry Time:<span style={{ color: 'red' }}>*</span></label>
+                                <input
+                                    className="form-control"
+                                    type="datetime-local"
                                     name="open_time"
                                     disabled={view}
                                     value={data.open_time || ''}
@@ -172,8 +174,10 @@ export default function AddUpdateTrade(props) {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Close Time:<span style={{ color: 'red' }}>*</span></label>
-                                <input type="text" className="form-control"
+                                <label className="form-label">Exit Time:<span style={{ color: 'red' }}>*</span></label>
+                                <input
+                                    className="form-control"
+                                    type="datetime-local"
                                     name="close_time"
                                     disabled={view}
                                     value={data.close_time || ''}
@@ -208,7 +212,7 @@ export default function AddUpdateTrade(props) {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">PnL (₹)</label>
+                                <label className="form-label">PnL</label>
                                 <input type="number" className="form-control"
                                     name="pnl"
                                     disabled={true}
@@ -221,7 +225,7 @@ export default function AddUpdateTrade(props) {
                                 <input type="number" className="form-control"
                                     name="charges"
                                     disabled={view}
-                                    value={data.charges || '0'}
+                                    value={data.charges || ''}
                                     onChange={(e) => onChangeHandler('charges', e.target.value)}
                                 />
                             </div>
