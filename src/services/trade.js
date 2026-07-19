@@ -17,9 +17,8 @@ export async function getTradeList(input) {
 
 export async function create(input) {
     try {
-        const { user_id, account_id } = input
         const HOST = 'http://localhost:4000/api/v1/trade'
-        const res = await axios.post(HOST, { user_id, account_id })
+        const res = await axios.post(HOST, input)
         return { ...res.data, type: 'success' }
     } catch (error) {
         return { message: error.message, statusCode: error.status, type: 'error' }

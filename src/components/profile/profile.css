@@ -1,0 +1,45 @@
+.profile-banner {
+    height: 230px;
+    background: linear-gradient(135deg, #a6c1eb, #6f42c1);
+    border-radius: 0 0 35px 35px;
+}
+
+.profile-card {
+    margin-top: -90px;
+    border: none;
+    border-radius: 20px;
+}
+
+.profile-img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 6px solid #fff;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 16px;
+    transition: .25s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.section-card {
+    border: none;
+    border-radius: 18px;
+}
+
+.badge-soft {
+    background: #eef4ff;
+    color: #0d6efd;
+    padding: .55rem .9rem;
+    border-radius: 50px;
+}
+
+.list-group-item {
+    padding: 1rem 0;
+}

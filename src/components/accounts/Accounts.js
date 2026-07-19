@@ -11,7 +11,6 @@ import Actions from "../utils/Actions";
 
 export default function Accounts() {
     const { user, logout } = useAuth();
-    console.log(user)
     const thead = [{ name: 'Name' }, { name: 'Currency' }, { name: 'Initial Cap' }, { name: 'Created' }, { name: 'Action' }]
     const [data, setData] = useState([]);
     const [sync, setSync] = useState(false);

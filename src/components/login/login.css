@@ -1,0 +1,84 @@
+ body {
+     min-height: 100vh;
+     /* background: linear-gradient(135deg, #d7e1ef, #c5c0cd); */
+ }
+
+ .login-card {
+     border: none;
+     border-radius: 20px;
+     overflow: hidden;
+ }
+
+ .logo-box {
+     width: 90px;
+     height: 90px;
+     border-radius: 18px;
+     background: rgba(255, 255, 255, .15);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin: auto;
+     font-size: 2.5rem;
+ }
+
+ .brand-section {
+     background: linear-gradient(135deg, #0d6efd, #6f42c1);
+     color: #fff;
+ }
+
+ .brand-icon {
+     width: 80px;
+     height: 80px;
+     border-radius: 50%;
+     background: rgba(255, 255, 255, .15);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 2rem;
+     margin: auto;
+ }
+
+ .form-control {
+     border-radius: 12px;
+     padding: .75rem 1rem;
+ }
+
+ .input-group-text {
+     border-radius: 12px 0 0 12px;
+ }
+
+ .btn-login {
+     border-radius: 12px;
+     padding: .75rem;
+     font-weight: 600;
+ }
+
+ .divider {
+     position: relative;
+     text-align: center;
+ }
+
+ .divider::before {
+     content: "";
+     position: absolute;
+     left: 0;
+     right: 0;
+     top: 50%;
+     border-top: 1px solid #dee2e6;
+ }
+
+ .divider span {
+     position: relative;
+     background: #fff;
+     padding: 0 1rem;
+ }
+
+ .social-btn {
+     border-radius: 12px;
+ }
+
+ @media(max-width:991px) {
+     .brand-section {
+         display: none;
+     }
+ }

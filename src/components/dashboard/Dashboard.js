@@ -50,35 +50,46 @@ export default function Dashboard(props) {
         get();
     }, [selectedAccId, filterData]);
 
+
+
     return <>
         <Navbar active_id='dbh' />
-        <Filter {...{ filterData, setFilterData }} />
-        <div className="mb-2">
-            <div className="border border-dark rounded border-1 mb-2 p-2">
-                <p>Summary</p>
-                <span className="fw-light text-muted">Initial Balance:&nbsp;</span>
-                <span className="fw-bold">{
-                    formattedCurrency(selectedAccount?.initial_cap, selectedAccount?.curr || 'inr')
-                }</span>
-                <p>
-                    <span className="fw-light text-muted">Total PnL:&nbsp;</span>
-                    <span className="fw-bold">{
-                        formattedCurrency(currentBal, selectedAccount?.curr || 'inr')
-                    }</span>
-                </p>
-            </div>
-            <div className="container border border-dark rounded border-1">
-                <Chart
-                    chartType="Line"
-                    width="100%"
-                    height="400px"
-                    data={statData}
-                    options={options}
-                />
-            </div>
-            <div className="container border border-dark rounded border-1 mb-2">
-            </div>
-        </div>
+        {
+            accountList.length < 1 ?
+                (<div className="alert alert-info mt-4" role="alert">
+                    No account selected. Go to to accounts page and create one.
+                </div>) :
+                <>
+                    <Filter {...{ filterData, setFilterData }} />
+                    <div className="mb-2">
+                        <div className="border border-dark rounded border-1 mb-2 p-2">
+                            <p>Summary</p>
+                            <span className="fw-light text-muted">Initial Balance:&nbsp;</span>
+                            <span className="fw-bold">{
+                                formattedCurrency(selectedAccount?.initial_cap, selectedAccount?.curr || 'inr')
+                            }</span>
+                            <p>
+                                <span className="fw-light text-muted">Total PnL:&nbsp;</span>
+                                <span className="fw-bold">{
+                                    formattedCurrency(currentBal, selectedAccount?.curr || 'inr')
+                                }</span>
+                            </p>
+                        </div>
+                        <div className="container border border-dark rounded border-1 mb-2">
+                            <Chart
+                                chartType="Line"
+                                width="100%"
+                                height="400px"
+                                data={statData}
+                                options={options}
+                            />
+                        </div>
+                        <div className="container border border-dark rounded border-1 mb-2">
+                            Pie Chart Coming Soon
+                        </div>
+                    </div>
+                </>
+        }
         <ToastContainer autoClose={1000} />
     </>
 }

@@ -13,7 +13,9 @@ export default function useAccount() {
         }
     }
     useEffect(() => {
-        get()
+        if (user) {
+            get()
+        }
     }, []);
 
     return { accountList }

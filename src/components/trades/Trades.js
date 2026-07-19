@@ -29,7 +29,6 @@ export default function Trades() {
         end: end.toISOString().split('T')[0]
     });
 
-
     const get = async () => {
         const res = await getTradeList({ user_id: user._id, account_id: selectedAccId, filter: filterData });
         if (res?.statusCode === 200) {

@@ -4,10 +4,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddUpdateAccount(props) {
-    console.log(props)
     const { sync, setSync, edit, view, id, name, curr, initial_cap, setEditOps } = props
     const [data, setData] = useState({ curr: 'inr' });
-    const { user } = useAuth();
+    const { user, syncAccList, setSyncAccList } = useAuth();
 
     const modifyAccount = async () => {
         const res = await update({
@@ -30,6 +29,8 @@ export default function AddUpdateAccount(props) {
         });
         toast[res.type](res.message);
         setSync(!sync)
+        //updating context
+        setSyncAccList(!syncAccList);
         document.querySelector("#add_acc .btn-close").click();
     }
 
@@ -67,7 +68,7 @@ export default function AddUpdateAccount(props) {
         if (edit || view) {
             setData(prev => ({ name, initial_cap, curr }))
         }
-    }, [edit, view])
+    }, [edit, view]);
 
     return (
         <>
