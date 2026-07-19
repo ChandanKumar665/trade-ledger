@@ -1,16 +1,21 @@
 import Navbar from "../utils/Navbar";
 import { useAuth } from "../../hooks/useAuth";
 import { Chart } from "react-google-charts";
+import useAccount from "../../hooks/useAccount";
+import { useEffect, useState } from "react";
+import { formatDate, formattedCurrency } from "../utils/utils";
+import { ToastContainer } from 'react-toastify';
+
+import { getTradeStats } from "../../services/trade";
+import Filter from "../utils/Filter";
 
 export default function Dashboard(props) {
-    const { user, logout } = useAuth();
-    const data = [
-        ["Jun", "Sales"],
-        ["July", 1000,],
-        ["Aug", 1170,],
-        ["Sep", 660,],
-        ["Oct", 1030,],
-    ];
+    const { user, logout, selectedAccId } = useAuth();
+    const { accountList } = useAccount();
+    const [selectedAccount, setSelectedAccount] = useState();
+    const [statData, setStatData] = useState();
+    const [currentBal, setCurrentBal] = useState();
+    const [filterData, setFilterData] = useState();
 
     const options = {
         chart: {
@@ -19,22 +24,61 @@ export default function Dashboard(props) {
         },
     };
 
+    const get = async () => {
+        const data = [
+            ["Date", "PnL"]
+        ];
+        const payload = { user_id: user._id, account_id: selectedAccId, filter: filterData };
+        const res = await getTradeStats(payload);
+        res?.data?.map((item, i) => {
+            const y = formatDate(item.open_time).date
+            const x = [y, item.total]
+            data.push(x)
+            if (i == res.data.length - 1) {
+                setCurrentBal(item.total);
+            }
+        })
+        setStatData(data)
+    }
+
+    useEffect(() => {
+        const found = accountList.find(account => account._id === selectedAccId)
+        setSelectedAccount(found)
+    }, [accountList, selectedAccId]);
+
+    useEffect(() => {
+        get();
+    }, [selectedAccId, filterData]);
+
     return <>
         <Navbar active_id='dbh' />
-        <div className="mt-2">
-            <div className="container border border-dark rounded border-1 mb-2">
+        <Filter {...{ filterData, setFilterData }} />
+        <div className="mb-2">
+            <div className="border border-dark rounded border-1 mb-2 p-2">
+                <p>Summary</p>
+                <span className="fw-light text-muted">Initial Balance:&nbsp;</span>
+                <span className="fw-bold">{
+                    formattedCurrency(selectedAccount?.initial_cap, selectedAccount?.curr || 'inr')
+                }</span>
+                <p>
+                    <span className="fw-light text-muted">Total PnL:&nbsp;</span>
+                    <span className="fw-bold">{
+                        formattedCurrency(currentBal, selectedAccount?.curr || 'inr')
+                    }</span>
+                </p>
+            </div>
+            <div className="container border border-dark rounded border-1">
                 <Chart
                     chartType="Line"
                     width="100%"
                     height="400px"
-                    data={data}
+                    data={statData}
                     options={options}
                 />
             </div>
             <div className="container border border-dark rounded border-1 mb-2">
-
             </div>
-
         </div>
+        <ToastContainer autoClose={1000} />
     </>
 }

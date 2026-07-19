@@ -27,12 +27,12 @@ export default function Navbar(props) {
     }
     useEffect(() => {
         if (accountList.length > 0) {
-            updateSelectedAccount(selectedAccId || accountList[0]._id)
+            updateSelectedAccount(selectedAccId || accountList[0])
         }
     }, [accountList])
 
     return (
-        <div className='mb-2'>
+        <div className='shadow mb-4'>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <a className="navbar-brand p-2" href="#">
                     <img src={logo} height={50} width={50} />

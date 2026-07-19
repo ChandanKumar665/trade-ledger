@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
         setSelectedAccId(id)
     }
 
-
     return (
         <AuthContext.Provider value={{ user, login, logout, updateSelectedAccount, selectedAccId }}>
             {children}

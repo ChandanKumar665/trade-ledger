@@ -1,8 +1,11 @@
+import moment from "moment";
+
 export function formattedCurrency(amount, curr) {
-    return new Intl.NumberFormat('en-IN', {
+    const value = new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency: curr
     }).format(amount);
+    return value
 }
 
 export function captialize(input) {
@@ -10,5 +13,5 @@ export function captialize(input) {
 }
 
 export function formatDate(input) {
-    return new Date(input).toLocaleString()
+    return { date: moment(input).format('MMM Do YYYY'), time: moment(input).format('h:mm a') }
 }

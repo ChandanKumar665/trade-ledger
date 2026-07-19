@@ -9,6 +9,9 @@ export default function AddUpdateTrade(props) {
     const [data, setData] = useState({ order_type: 'buy' });
     const { user, selectedAccId } = useAuth();
 
+    const reset = () => {
+        setData({ order_type: 'buy' })
+    }
     const modifyTrade = async () => {
         const payload = {
             symbol: data.symbol,
@@ -29,6 +32,7 @@ export default function AddUpdateTrade(props) {
         toast[res.type](res.message);
         setSync(!sync)
         document.querySelector("#add_up_trade .btn-close").click();
+        reset();
     }
     const createTrade = async () => {
         const payload = {
@@ -49,8 +53,8 @@ export default function AddUpdateTrade(props) {
         toast[res.type](res.message);
         setSync(!sync)
         document.querySelector("#add_up_trade .btn-close").click();
+        reset();
     }
-
     const formSubmitHandler = async (e) => {
         e.preventDefault();
         if (edit) {
@@ -107,7 +111,7 @@ export default function AddUpdateTrade(props) {
     useEffect(() => {
         const { order_type, entry_price, exit_price, qty } = data
         const pnl = order_type === 'buy' ? (exit_price - entry_price) * qty : (entry_price - exit_price) * qty
-        setData(prev => ({ ...prev, pnl }))
+        setData(prev => ({ ...prev, pnl: parseFloat(pnl).toFixed(2) }))
     }, [data.order_type, data.entry_price, data.exit_price, data.qty]);
 
     useEffect(() => {
@@ -149,8 +153,8 @@ export default function AddUpdateTrade(props) {
                                     className="form-select"
                                     disabled={view}
                                     onChange={(e) => onChangeHandler('order_type', e.target.value)}>
-                                    <option value='buy'>BUY </option>
-                                    <option value='sell'>SELL</option>
+                                    <option value='buy' selected={data.order_type === 'buy'}>BUY </option>
+                                    <option value='sell' selected={data.order_type === 'sell'}>SELL</option>
                                 </select>
                             </div>
                             <div className="mb-3">

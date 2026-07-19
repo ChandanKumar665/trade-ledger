@@ -6,9 +6,9 @@ const headers = {
 }
 export async function getTradeList(input) {
     try {
-        const { user_id, account_id } = input
+        const { user_id, account_id, filter } = input
         const HOST = 'http://localhost:4000/api/v1/trade/list'
-        const res = await axios.post(HOST, { user_id, account_id })
+        const res = await axios.post(HOST, { user_id, account_id, filter })
         return { ...res.data, type: 'success' }
     } catch (error) {
         return { message: error.message, statusCode: error.status, type: 'error' }
@@ -19,7 +19,7 @@ export async function create(input) {
     try {
         const { user_id, account_id } = input
         const HOST = 'http://localhost:4000/api/v1/trade'
-        const res = await axios.post(HOST, input)
+        const res = await axios.post(HOST, { user_id, account_id })
         return { ...res.data, type: 'success' }
     } catch (error) {
         return { message: error.message, statusCode: error.status, type: 'error' }
@@ -43,6 +43,19 @@ export async function update(input) {
         const res = await axios.post(HOST, {
             user_id, account_id, trade_id, symbol, order_type, desc, open_time,
             close_time, entry_price, exit_price, qty, pnl, charges
+        }, headers)
+        return { ...res.data, type: 'success' }
+    } catch (error) {
+        return { message: error.message, statusCode: error.status, type: 'error' }
+    }
+}
+
+export async function getTradeStats(input) {
+    try {
+        const { user_id, account_id, filter } = input
+        const HOST = 'http://localhost:4000/api/v1/trade/stats'
+        const res = await axios.post(HOST, {
+            user_id, account_id, filter
         }, headers)
         return { ...res.data, type: 'success' }
     } catch (error) {

@@ -8,6 +8,7 @@ import { formatDate, formattedCurrency } from "../utils/utils";
 import AddUpdateTrade from "./AddUpdateTrade";
 import DeleteTrade from "./DeleteTrade";
 import Actions from "../utils/Actions";
+import Filter from "../utils/Filter";
 
 export default function Trades() {
     const { user, logout, selectedAccId } = useAuth();
@@ -17,11 +18,20 @@ export default function Trades() {
     const [data, setData] = useState([])
     const [sync, setSync] = useState(false);
     const [deleteOps, setDeleteOps] = useState({});
-    const [editOps, setEditOps] = useState({})
+    const [editOps, setEditOps] = useState({});
 
-    const get = async (input) => {
-        const res = await getTradeList(input);
-        console.log('r', res)
+    const start = new Date();
+    const end = new Date();
+    start.setUTCDate(end.getUTCDate() - 7);//7 days before
+
+    const [filterData, setFilterData] = useState({
+        start: start.toISOString().split('T')[0],
+        end: end.toISOString().split('T')[0]
+    });
+
+
+    const get = async () => {
+        const res = await getTradeList({ user_id: user._id, account_id: selectedAccId, filter: filterData });
         if (res?.statusCode === 200) {
             setData(res.data)
         }
@@ -34,13 +44,12 @@ export default function Trades() {
         setEditOps(prev => ({ ...prev, ...input }))
     }
     useEffect(() => {
-        if (user) {
-            get({ user_id: user._id, account_id: selectedAccId })
-        }
-    }, [sync, selectedAccId])
+        get()
+    }, [sync, selectedAccId, filterData]);
 
     return <>
         <Navbar active_id='th' />
+        <Filter {...{ filterData, setFilterData }} />
         <div className="mb-2">
             <AddUpdateTrade {...{ ...editOps, setEditOps, sync, setSync }} />
         </div>
@@ -81,12 +90,20 @@ export default function Trades() {
                                 }
                             }
                             const curr = item.curr[0].curr
+                            const open = formatDate(item.open_time)
+                            const close = formatDate(item.close_time)
                             return (
                                 <tr key={i}>
                                     <td>{item.symbol}</td>
                                     <td>{item.order_type}</td>
-                                    <td>{item.open_time}</td>
-                                    <td>{item?.close_time}</td>
+                                    <td>
+                                        <span>{open.date}</span><br></br>
+                                        <span>{open.time}</span>
+                                    </td>
+                                    <td>
+                                        <span>{close.date}</span><br></br>
+                                        <span>{close.time}</span>
+                                    </td>
                                     <td>{item.entry_price}</td>
                                     <td>{item.exit_price}</td>
                                     <td>{`${formattedCurrency(item.pnl, curr)}`}</td>
