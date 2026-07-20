@@ -17,7 +17,6 @@ export default function Login2() {
         if (data.otp === '1234') {
             //check user
             const res = await authUser({ phone: data.mobile })
-            console.log('res', res)
             if (res?.data?._id) {
                 toast[res.type](res.message);
                 login(res.data)

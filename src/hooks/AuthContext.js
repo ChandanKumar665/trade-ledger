@@ -16,10 +16,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("user");
         setUser(null);
         setSelectedAccId(null);
+        setAccountList([]);
     }
     const login = async (data) => {
         localStorage.setItem('user', JSON.stringify(data))
         setUser(data);
+        setSyncAccList(!syncAccList);
     }
     const updateSelectedAccount = (id) => {
         setSelectedAccId(id)
