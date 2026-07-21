@@ -106,13 +106,13 @@ export default function AddUpdateTrade(props) {
         return () => {
             modalEl.removeEventListener("hidden.bs.modal", () => { });
         };
-    }, [onModalClose]);
+    }, []);
 
     useEffect(() => {
         const { order_type, entry_price, exit_price, qty } = data
         const pnl = order_type === 'buy' ? (exit_price - entry_price) * qty : (entry_price - exit_price) * qty
         setData(prev => ({ ...prev, pnl: parseFloat(pnl).toFixed(2) }))
-    }, [data, data.order_type, data.entry_price, data.exit_price, data.qty]);
+    }, [data.order_type, data.entry_price, data.exit_price, data.qty]);
 
     useEffect(() => {
         if (edit || view) {
