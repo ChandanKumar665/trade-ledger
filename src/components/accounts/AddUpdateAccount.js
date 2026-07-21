@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { create, update } from "../../services/accounts";
+import { toast } from 'react-toastify';
 import { useAuth } from "../../hooks/useAuth";
-import { ToastContainer, toast } from 'react-toastify';
+import { create, update } from "../../services/accounts";
 
 export default function AddUpdateAccount(props) {
     const { sync, setSync, edit, view, id, name, curr, initial_cap, setEditOps } = props

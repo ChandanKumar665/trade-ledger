@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
         if (user) {
             get()
         }
-    }, [syncAccList]);
+    }, [syncAccList], user);
 
 
     return (

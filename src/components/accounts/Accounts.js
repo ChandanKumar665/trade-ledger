@@ -1,16 +1,16 @@
-import Navbar from "../utils/Navbar";
-import { useAuth } from "../../hooks/useAuth"
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import { useAuth } from "../../hooks/useAuth";
 import { getAccountList } from "../../services/accounts";
+import Actions from "../utils/Actions";
+import Navbar from "../utils/Navbar";
 import { captialize, formattedCurrency } from "../utils/utils";
 import AddUpdateAccount from "./AddUpdateAccount";
 import DeleteAccount from "./DeleteAccount";
-import Actions from "../utils/Actions";
 
 
 export default function Accounts() {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const thead = [{ name: 'Name' }, { name: 'Currency' }, { name: 'Initial Cap' }, { name: 'Created' }, { name: 'Action' }]
     const [data, setData] = useState([]);
     const [sync, setSync] = useState(false);
@@ -36,7 +36,7 @@ export default function Accounts() {
         if (user) {
             get()
         }
-    }, [sync])
+    }, [sync, user])
 
     return <>
         <Navbar active_id='acc' />

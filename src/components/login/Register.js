@@ -1,16 +1,14 @@
-import Navbar from "../utils/Navbar";
-import './login.css';
-import { useState } from "react"
-import { useAuth } from "../../hooks/useAuth"
-import { useNavigate, Navigate, useLocation } from "react-router-dom";
-import { authUser } from "../../services/auth";
-import { toast, ToastContainer } from "react-toastify";
-import Brand from "./Brand";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
 import { createUser } from "../../services/user";
+import Navbar from "../utils/Navbar";
+import Brand from "./Brand";
+import './login.css';
 
 export default function Register(props) {
-    const { user, login } = useAuth();
-    const [isOtpSent, setIsOtpSend] = useState(false)
+    const { login } = useAuth();
     const [data, setData] = useState({})
     const navigate = useNavigate();
     const { state } = useLocation();
@@ -31,10 +29,6 @@ export default function Register(props) {
             login(res.data)
             navigate('/dashboard', { replace: true })
         }
-    }
-
-    const sendOTP = () => {
-        setIsOtpSend(true)
     }
 
     const changeHandler = (key, value) => {

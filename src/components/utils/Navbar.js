@@ -1,6 +1,5 @@
 
 import { useEffect } from 'react';
-import logo from '../../asset/logo.png'
 import { useAuth } from '../../hooks/useAuth'
 import { useNavigate, NavLink } from "react-router-dom";
 
@@ -13,7 +12,6 @@ export default function Navbar(props) {
     { name: 'Accounts', key: 'acc', path: '/accounts' }];
 
     const defaultNav = [{ name: 'Login', path: '/login' }, { name: 'Privacy Policy', path: '/privacy' }, { name: 'About', path: '/about' }];
-    const cls = `av-item nav-link`;
     const finalNav = user ? userNav : defaultNav;
 
     const handleLogout = () => {
@@ -30,7 +28,7 @@ export default function Navbar(props) {
         if (accountList.length > 0) {
             updateSelectedAccount(selectedAccId || accountList[0])
         }
-    }, [accountList])
+    }, [accountList, selectedAccId])
 
     return (
         <div className='shadow mb-4'>
@@ -54,7 +52,7 @@ export default function Navbar(props) {
                         {
                             finalNav.map((item, i) => {
                                 const isActive = item.key === props.active_id
-                                return <NavLink key={i} className={`av-item nav-link ${!isActive ? 'active' : ''}`} to={item.path}>{item.name}</NavLink>
+                                return <NavLink key={i} className={`nav-item nav-link ${!isActive ? 'active' : ''}`} to={item.path}>{item.name}</NavLink>
                             })
                         }
                     </div>

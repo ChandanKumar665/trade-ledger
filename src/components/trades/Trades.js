@@ -1,18 +1,16 @@
-import Navbar from "../utils/Navbar";
-import { useNavigate, Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth"
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
-import { getTradeList } from '../../services/trade'
+import { useAuth } from "../../hooks/useAuth";
+import { getTradeList } from '../../services/trade';
+import Actions from "../utils/Actions";
+import Filter from "../utils/Filter";
+import Navbar from "../utils/Navbar";
 import { formatDate, formattedCurrency } from "../utils/utils";
 import AddUpdateTrade from "./AddUpdateTrade";
 import DeleteTrade from "./DeleteTrade";
-import Actions from "../utils/Actions";
-import Filter from "../utils/Filter";
 
 export default function Trades() {
-    const { user, logout, selectedAccId } = useAuth();
-    const navigate = useNavigate();
+    const { user, selectedAccId } = useAuth();
     const thead = [{ name: 'Symbol' }, { name: 'Type' }, { name: 'Entry Time' }, { name: 'Exit Time' },
     { name: 'Entry Price' }, { name: 'Exit Price' }, { name: 'PnL' }, { name: 'Actions' }]
     const [data, setData] = useState([])

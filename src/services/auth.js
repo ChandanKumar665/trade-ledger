@@ -7,7 +7,7 @@ export async function authUser(input) {
         const res = await axios.post(HOST, { phone })
         return { ...res.data, type: 'success' }
     } catch (error) {
-        const { message, statusCode, success } = error.response.data
+        const { message, statusCode, } = error.response.data
         return { message, statusCode, type: 'error' }
     }
 

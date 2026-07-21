@@ -1,7 +1,6 @@
 import Navbar from "../utils/Navbar";
 import { useAuth } from "../../hooks/useAuth";
 import { Chart } from "react-google-charts";
-import useAccount from "../../hooks/useAccount";
 import { useEffect, useState } from "react";
 import { formatDate, formattedCurrency } from "../utils/utils";
 import { ToastContainer } from 'react-toastify';
@@ -10,8 +9,7 @@ import { getTradeStats } from "../../services/trade";
 import Filter from "../utils/Filter";
 
 export default function Dashboard(props) {
-    const { user, logout, selectedAccId } = useAuth();
-    const { accountList } = useAccount();
+    const { user, logout, selectedAccId, accountList } = useAuth();
     const [selectedAccount, setSelectedAccount] = useState();
     const [statData, setStatData] = useState();
     const [currentBal, setCurrentBal] = useState();

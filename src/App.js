@@ -1,16 +1,15 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { routes } from './routes'
-import Login from './components/login/Login';
-import Trades from './components/trades/Trades';
-import Dashboard from './components/dashboard/Dashboard';
-import Accounts from './components/accounts/Accounts';
-import PublicRoute from './PublicRoute';
 import ProtectedRoute from './ProtectedRoute';
+import PublicRoute from './PublicRoute';
 import ErrorPage from './components/404';
 import Privacy from './components/Privacy';
+import Accounts from './components/accounts/Accounts';
+import Dashboard from './components/dashboard/Dashboard';
+import Login from './components/login/Login';
 import Register from './components/login/Register';
 import Profile from './components/profile/Profile';
+import Trades from './components/trades/Trades';
 
 
 function App() {
