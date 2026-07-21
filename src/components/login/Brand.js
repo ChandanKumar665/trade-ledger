@@ -5,7 +5,7 @@ export default function Brand() {
         <div className="col-lg-5 d-flex align-items-center brand-section p-5">
             <div className="text-center">
                 <div class="logo-box mb-4">
-                    <i class="bi bi-bar-chart-line-fill"></i>
+                    <i class="bi bi-graph-up-arrow"></i>
                 </div>
                 <h2 className="fw-bold">Trade Ledger</h2>
                 <p class="opacity-75 mt-3">

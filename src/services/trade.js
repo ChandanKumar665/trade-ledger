@@ -7,7 +7,7 @@ const headers = {
 export async function getTradeList(input) {
     try {
         const { user_id, account_id, filter } = input
-        const HOST = 'http://localhost:4000/api/v1/trade/list'
+        const HOST = `${process.env.REACT_APP_API_URL}/api/v1/trade/list`
         const res = await axios.post(HOST, { user_id, account_id, filter })
         return { ...res.data, type: 'success' }
     } catch (error) {
@@ -17,7 +17,7 @@ export async function getTradeList(input) {
 
 export async function create(input) {
     try {
-        const HOST = 'http://localhost:4000/api/v1/trade'
+        const HOST = `${process.env.REACT_APP_API_URL}/api/v1/trade`
         const res = await axios.post(HOST, input)
         return { ...res.data, type: 'success' }
     } catch (error) {
@@ -27,7 +27,7 @@ export async function create(input) {
 export async function remove(input) {
     try {
         const { user_id, account_id, trade_id } = input
-        const HOST = 'http://localhost:4000/api/v1/trade/remove'
+        const HOST = `${process.env.REACT_APP_API_URL}/api/v1/trade/remove`
         const res = await axios.post(HOST, { user_id, account_id, trade_id }, headers)
         return { ...res.data, type: 'success' }
     } catch (error) {
@@ -38,7 +38,7 @@ export async function update(input) {
     try {
         const { user_id, account_id, trade_id, symbol, order_type, desc, open_time,
             close_time, entry_price, exit_price, qty, pnl, charges } = input
-        const HOST = 'http://localhost:4000/api/v1/trade/update'
+        const HOST = `${process.env.REACT_APP_API_URL}/api/v1/trade/update`
         const res = await axios.post(HOST, {
             user_id, account_id, trade_id, symbol, order_type, desc, open_time,
             close_time, entry_price, exit_price, qty, pnl, charges
@@ -52,7 +52,7 @@ export async function update(input) {
 export async function getTradeStats(input) {
     try {
         const { user_id, account_id, filter } = input
-        const HOST = 'http://localhost:4000/api/v1/trade/stats'
+        const HOST = `${process.env.REACT_APP_API_URL}/api/v1/trade/stats`
         const res = await axios.post(HOST, {
             user_id, account_id, filter
         }, headers)

@@ -37,7 +37,7 @@ export default function Navbar(props) {
             <nav className="navbar navbar-expand-sm navbar-light bg-light px-2">
                 <a className="navbar-brand p-2" href="#">
                     {/* <img src={logo} height={50} width={50} /> */}
-                    <i class="bi bi-bar-chart-line-fill"></i>
+                    <i class="bi bi-graph-up-arrow"></i>
                 </a>
                 <button
                     className="navbar-toggler"
