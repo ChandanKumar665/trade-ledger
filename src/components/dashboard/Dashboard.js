@@ -32,7 +32,7 @@ export default function Dashboard(props) {
             const y = formatDate(item.open_time).date
             const x = [y, item.total]
             data.push(x)
-            if (i == res.data.length - 1) {
+            if (i === res.data.length - 1) {
                 setCurrentBal(item.total);
             }
         })
