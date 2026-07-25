@@ -12,7 +12,6 @@ export async function createUser(input) {
         return { message, statusCode, type: 'error' }
     }
 }
-
 export async function updateUser(input) {
     try {
         const { name, email, bio, user_id, trading_exp } = input
