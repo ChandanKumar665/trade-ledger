@@ -2,9 +2,11 @@
   text-align: center;
 }
 
-/* body {
-  font-family: roboto serif;
-} */
+body {
+  overflow-y: scroll;
+  background: #F4F7Fb;
+  font-family: Segoe UI, Arial, sans-serif;
+}
 
 .App-logo {
   height: 40vmin;

@@ -1,0 +1,60 @@
+.hero {
+    padding: 90px 0;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.hero p {
+    color: #64748B;
+    font-size: 18px;
+}
+
+.hero img {
+    width: 100%;
+    border-radius: 20px;
+}
+
+.btn-login {
+    background: #2563EB;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 8px 24px;
+    transition: .3s;
+}
+
+.btn-login:hover {
+    background: #1D4ED8;
+}
+
+.card {
+    border: none;
+    border-radius: 18px;
+    transition: .3s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+}
+
+.feature-card {
+    transition: .3s;
+    border: 1;
+    border-radius: 15px;
+}
+
+.icon {
+    font-size: 45px;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+}
+
+footer {
+    background: #212529;
+    color: #fff;
+    padding: 20px 0;
+}

@@ -1,17 +1,41 @@
-import Navbar from "../utils/Navbar";
-import { useAuth } from "../../hooks/useAuth";
-import { Chart } from "react-google-charts";
 import { useEffect, useState } from "react";
-import { formatDate, formattedCurrency } from "../utils/utils";
+import { Chart } from "react-google-charts";
 import { ToastContainer } from 'react-toastify';
-
+import { useAuth } from "../../hooks/useAuth";
+import Navbar from "../utils/Navbar";
+import { formatDate, formattedCurrency } from "../utils/utils";
+import { Line, Doughnut } from "react-chartjs-2";
 import { getTradeStats } from "../../services/trade";
 import Filter from "../utils/Filter";
+import "./dashboard.css";
+import SideNav from "../utils/SideNav";
 
 export default function Dashboard(props) {
     const { user, logout, selectedAccId, accountList } = useAuth();
     const [selectedAccount, setSelectedAccount] = useState();
-    const [statData, setStatData] = useState();
+    const [statData, setStatData] = useState()
+    const [chartData, setChartData] = useState({
+        labels: [],
+        datasets: [
+            {
+                label: "P&L",
+                data: [],
+                borderColor: "#0d6efd",
+                backgroundColor: "rgba(13,110,253,0.2)",
+                tension: 0.4,
+                fill: true,
+            },
+        ],
+    });
+    const [donutData, setDonutData] = useState({
+        labels: ["Winning", "Losing"],
+        datasets: [
+            {
+                data: [],
+                backgroundColor: ["#198754", "#dc3545"],
+            },
+        ],
+    })
     const [currentBal, setCurrentBal] = useState();
     const [filterData, setFilterData] = useState();
 
@@ -23,20 +47,41 @@ export default function Dashboard(props) {
     };
 
     const get = async () => {
-        const data = [
-            ["Date", "PnL"]
-        ];
         const payload = { user_id: user._id, account_id: selectedAccId, filter: filterData };
         const res = await getTradeStats(payload);
+        const labels = []
+        const datasets = []
+        let win = 0;
+        let totalWinPnl = 0;
+        let totalLosingPnl = 0;
+        const total = res?.data?.length || 0
+        let currentBal = 0;
+        console.log(res)
         res?.data?.map((item, i) => {
-            const y = formatDate(item.open_time).date
-            const x = [y, item.total]
-            data.push(x)
+            const days = formatDate(item.open_time).date
+            if (item.pnl > 0) {
+                win += 1
+                totalWinPnl += (item.pnl)
+            } else {
+                totalLosingPnl += Math.abs(item.pnl)
+            }
+            labels.push(days);
+            datasets.push(item.total)
             if (i === res.data.length - 1) {
-                setCurrentBal(item.total);
+                currentBal = item.total;
             }
         })
-        setStatData(data)
+        setStatData(prev => ({
+            win,
+            lose: total - win,
+            totalTrades: total,
+            currentBal,
+            winRate: `${((win / total) * 100).toFixed(2) || 0}%`,
+            riskReward: `1: ${(totalWinPnl / totalLosingPnl).toFixed(1)}`
+        }
+        ))
+        setDonutData(prev => ({ ...prev, datasets: [{ ...prev.datasets[0], data: [win, total - win] }] }))
+        setChartData(prev => ({ ...prev, labels: labels, datasets: [{ ...prev.datasets[0], data: datasets }] }))
     }
 
     useEffect(() => {
@@ -48,43 +93,117 @@ export default function Dashboard(props) {
         get();
     }, [selectedAccId, filterData]);
 
-
-
+    console.log(statData)
     return <>
-        <Navbar active_id='dbh' />
+        <div className="row">
+            <Navbar active_id='dbh' />
+        </div>
+
         {
             accountList.length < 1 ?
                 (<div className="alert alert-info mt-4" role="alert">
                     No account selected. Go to to accounts page and create one.
                 </div>) :
                 <>
-                    <Filter {...{ filterData, setFilterData }} />
-                    <div className="mb-2">
-                        <div className="border border-dark rounded border-1 mb-2 p-2">
-                            <p>Summary</p>
-                            <span className="fw-light text-muted">Initial Balance:&nbsp;</span>
-                            <span className="fw-bold">{
-                                formattedCurrency(selectedAccount?.initial_cap, selectedAccount?.curr || 'inr')
-                            }</span>
-                            <p>
-                                <span className="fw-light text-muted">Total PnL:&nbsp;</span>
+                    <div className="row p-2">
+                        <div className="col-lg-2 p-2">
+                            <SideNav active_id='dbh' />
+                        </div>
+                        <main className="col-lg-10 p-2">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Dashboard</h2>
+                            </div>
+                            <Filter {...{ filterData, setFilterData }} />
+                            {/* <div className="border border-dark rounded border-1 mb-2 p-2">
+                                <p>Summary</p>
+                                <span className="fw-light text-muted">Initial Balance:&nbsp;</span>
                                 <span className="fw-bold">{
-                                    formattedCurrency(currentBal, selectedAccount?.curr || 'inr')
+                                    formattedCurrency(selectedAccount?.initial_cap, selectedAccount?.curr || 'inr')
                                 }</span>
-                            </p>
-                        </div>
-                        <div className="container border border-dark rounded border-1 mb-2">
-                            <Chart
-                                chartType="Line"
-                                width="100%"
-                                height="400px"
-                                data={statData}
-                                options={options}
-                            />
-                        </div>
-                        <div className="container border border-dark rounded border-1 mb-2">
-                            Pie Chart Coming Soon
-                        </div>
+                            </div> */}
+                            <div className="row g-3">
+                                <div className="col-md-3">
+                                    <div className="card p-3">
+                                        {/* <div>Initial Cap</div>
+                                        <span className="fw-bold">{
+                                            formattedCurrency(selectedAccount?.initial_cap, selectedAccount?.curr || 'inr')
+                                        }</span> */}
+                                        <div>Total P&L</div>
+                                        <div className="stat text-success">{formattedCurrency(statData?.currentBal, selectedAccount?.curr || 'inr')}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card p-3">
+                                        <div>Win Rate</div>
+                                        <div className="stat text-primary">{statData?.winRate}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card p-3">
+                                        <div>Risk/Reward</div>
+                                        <div className="stat">{statData?.riskReward}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div className="card p-3">
+                                        <div>Total Trades</div>
+                                        <div className="stat">{statData?.totalTrades}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row g-4 mt-2">
+                                <div className="col-lg-8">
+                                    <div className="card p-3">
+                                        <h5>Equity Curve</h5>
+                                        <div style={{ height: "350px" }}>
+                                            <Line data={chartData} options={options} />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div className="col-lg-4">
+                                    <div className="card p-3">
+                                        <h5>Win vs Loss</h5>
+                                        <div style={{ height: "350px" }}>
+                                            <Doughnut data={donutData} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* <div class="card mt-4 p-3">
+                                <h5>Recent Trades</h5>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Symbol</th>
+                                            <th>Side</th>
+                                            <th>P&L</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>22 Jul</td>
+                                            <td>BTCUSD</td>
+                                            <td>Long</td>
+                                            <td class="text-success">+₹8,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>21 Jul</td>
+                                            <td>ETHUSD</td>
+                                            <td>Short</td>
+                                            <td class="text-danger">-₹1,200</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 Jul</td>
+                                            <td>NIFTY</td>
+                                            <td>Long</td>
+                                            <td class="text-success">+₹5,400</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> */}
+                        </main>
                     </div>
                 </>
         }

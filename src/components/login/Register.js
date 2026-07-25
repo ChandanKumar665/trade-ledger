@@ -35,7 +35,6 @@ export default function Register(props) {
         setData(prev => ({ ...prev, [key]: value }))
     }
 
-
     return (
         <>
             <Navbar />
