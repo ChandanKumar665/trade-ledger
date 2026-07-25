@@ -3,7 +3,7 @@ import Navbar from "./utils/Navbar";
 export default function Privacy() {
     return (
         <>
-            <Navbar />
+            <Navbar active_id='pp' />
             <div className="mb-2">
                 <div class="card shadow-sm border-0">
                     <div class="card-body p-5">

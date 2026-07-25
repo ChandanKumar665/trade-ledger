@@ -15,3 +15,12 @@ export function captialize(input) {
 export function formatDate(input) {
     return { date: moment(input).format('MMM Do YYYY'), time: moment(input).format('h:mm a') }
 }
+
+export function getInitials(name) {
+    return name
+        .trim()
+        .split(' ')
+        .map(part => part[0])
+        .join('')
+        .toUpperCase();
+}
