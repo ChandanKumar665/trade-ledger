@@ -1,7 +1,13 @@
-import Dashboard from './components/dashboard/Dashboard'
-import Trades from "./components/trades/Trades"
+import ErrorPage from './components/404'
+import Privacy from './components/Privacy'
 import Accounts from "./components/accounts/Accounts"
+import Dashboard from './components/dashboard/Dashboard'
+import Home from "./components/home/Home"
 import Login from "./components/login/Login"
+import Register from './components/login/Register'
+import Profile from './components/profile/Profile'
+import Reports from './components/reports/Reports'
+import Trades from "./components/trades/Trades"
 
 export const routes = [
     {

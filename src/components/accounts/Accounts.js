@@ -6,6 +6,7 @@ import Actions from "../utils/Actions";
 import { captialize, formattedCurrency } from "../utils/utils";
 import AddUpdateAccount from "./AddUpdateAccount";
 import DeleteAccount from "./DeleteAccount";
+import SideNav from "../utils/SideNav";
 
 
 export default function Accounts() {

@@ -36,9 +36,6 @@ function App() {
             [...protectedRoutes, ...common].map(route => <Route path={route.path} element={route.component} />)
           }
         </Route>
-        {/* {
-          routes.map((route, i) => <Route key={i} path={route.path} element={route.component} />)
-        } */}
       </Routes>
     </BrowserRouter >
   );

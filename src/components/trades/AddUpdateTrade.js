@@ -125,7 +125,10 @@ export default function AddUpdateTrade(props) {
     return <>
         {/* <!-- Button trigger modal --> */}
         <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_up_trade">
-            Add Trades +
+            <span>
+                <i className="bi bi-plus-circle"></i>&nbsp;
+                Add Trade
+            </span>
         </button>
         {/* <!-- Modal --> */}
         <div className="modal fade" id="add_up_trade" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

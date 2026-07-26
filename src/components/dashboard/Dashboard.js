@@ -1,17 +1,41 @@
-import Navbar from "../utils/Navbar";
-import { useAuth } from "../../hooks/useAuth";
-import { Chart } from "react-google-charts";
 import { useEffect, useState } from "react";
-import { formatDate, formattedCurrency } from "../utils/utils";
+import { Chart } from "react-google-charts";
 import { ToastContainer } from 'react-toastify';
-
+import { useAuth } from "../../hooks/useAuth";
+import Navbar from "../utils/Navbar";
+import { formatDate, formattedCurrency } from "../utils/utils";
+import { Line, Doughnut } from "react-chartjs-2";
 import { getTradeStats } from "../../services/trade";
 import Filter from "../utils/Filter";
+import "./dashboard.css";
+import SideNav from "../utils/SideNav";
 
 export default function Dashboard(props) {
     const { user, logout, selectedAccId, accountList } = useAuth();
     const [selectedAccount, setSelectedAccount] = useState();
-    const [statData, setStatData] = useState();
+    const [statData, setStatData] = useState()
+    const [chartData, setChartData] = useState({
+        labels: [],
+        datasets: [
+            {
+                label: "P&L",
+                data: [],
+                borderColor: "#0d6efd",
+                backgroundColor: "rgba(13,110,253,0.2)",
+                tension: 0.4,
+                fill: true,
+            },
+        ],
+    });
+    const [donutData, setDonutData] = useState({
+        labels: ["Winning", "Losing"],
+        datasets: [
+            {
+                data: [],
+                backgroundColor: ["#198754", "#dc3545"],
+            },
+        ],
+    })
     const [currentBal, setCurrentBal] = useState();
     const [filterData, setFilterData] = useState();
 
@@ -23,20 +47,41 @@ export default function Dashboard(props) {
     };
 
     const get = async () => {
-        const data = [
-            ["Date", "PnL"]
-        ];
         const payload = { user_id: user._id, account_id: selectedAccId, filter: filterData };
         const res = await getTradeStats(payload);
+        const labels = []
+        const datasets = []
+        let win = 0;
+        let totalWinPnl = 0;
+        let totalLosingPnl = 0;
+        const total = res?.data?.length || 0
+        let currentBal = 0;
+        console.log(res)
         res?.data?.map((item, i) => {
-            const y = formatDate(item.open_time).date
-            const x = [y, item.total]
-            data.push(x)
+            const days = formatDate(item.open_time).date
+            if (item.pnl > 0) {
+                win += 1
+                totalWinPnl += (item.pnl)
+            } else {
+                totalLosingPnl += Math.abs(item.pnl)
+            }
+            labels.push(days);
+            datasets.push(item.total)
             if (i === res.data.length - 1) {
-                setCurrentBal(item.total);
+                currentBal = item.total;
             }
         })
-        setStatData(data)
+        setStatData(prev => ({
+            win,
+            lose: total - win,
+            totalTrades: total,
+            currentBal,
+            winRate: `${((win / total) * 100).toFixed(2) || 0}%`,
+            riskReward: `1: ${(totalWinPnl / totalLosingPnl).toFixed(1)}`
+        }
+        ))
+        setDonutData(prev => ({ ...prev, datasets: [{ ...prev.datasets[0], data: [win, total - win] }] }))
+        setChartData(prev => ({ ...prev, labels: labels, datasets: [{ ...prev.datasets[0], data: datasets }] }))
     }
 
     useEffect(() => {

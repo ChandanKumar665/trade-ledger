@@ -1,5 +1,7 @@
+import { NavLink } from "react-router-dom";
 import Login from "../login/Login";
 import Navbar from "../utils/Navbar";
+import './home.css'
 
 export default function Home() {
     return (

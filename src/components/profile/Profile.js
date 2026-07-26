@@ -1,9 +1,65 @@
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
+import { getProfile, updateUser } from "../../services/user";
 import Navbar from "../utils/Navbar";
-import "./profile.css"
+import { formatDate } from "../utils/utils";
+import "./profile.css";
+import SideNav from "../utils/SideNav";
 
 export default function Profile() {
     const { user } = useAuth();
+    const [data, setData] = useState({});
+    const [edit, setEdit] = useState(false);
+    const [userDetails, setUserDetails] = useState({});
+    const [sync, setSync] = useState(false);
+
+    const onChangeHandler = (key, val) => {
+        setData(prev => ({ ...prev, [key]: val }))
+    }
+    const formSubmitHandler = async (e) => {
+        e.preventDefault();
+        if (edit) {
+            const isEqual =
+                JSON.stringify({ name: data.name, trading_exp: data.trading_exp, email: data.email, bio: data.bio }) ===
+                JSON.stringify({ name: userDetails.name, trading_exp: userDetails.trading_exp, email: userDetails.email, bio: userDetails.bio })
+            if (!isEqual) {
+                const payload = {
+                    user_id: user._id,
+                    name: data.name,
+                    email: data.email,
+                    trading_exp: data.trading_exp,
+                    bio: data.bio
+                }
+                const res = await updateUser(payload);
+                setEdit(prev => false);
+                setSync(prev => !prev);
+                return toast[res.type](res.message);
+            }
+            toast['info']('Update at least one field');
+        }
+    }
+    const fetchUserDetails = async () => {
+        const res = await getProfile({ user_id: user._id });
+        if (res.success) {
+            setUserDetails(res?.data)
+        }
+    }
+    useEffect(() => {
+        if (edit) {
+            setData(prev => ({
+                ...prev,
+                name: userDetails.name,
+                trading_exp: userDetails.trading_exp,
+                email: userDetails.email,
+                bio: userDetails.bio
+            }))
+        }
+    }, [edit]);
+
+    useEffect(() => {
+        fetchUserDetails()
+    }, [sync])
     return (
         <>
             <div className="card">
@@ -150,6 +206,5 @@ export default function Profile() {
             </div>
             <ToastContainer autoClose={1000} />
         </>
-
     )
 }

@@ -8,6 +8,7 @@ import Navbar from "../utils/Navbar";
 import { formatDate, formattedCurrency } from "../utils/utils";
 import AddUpdateTrade from "./AddUpdateTrade";
 import DeleteTrade from "./DeleteTrade";
+import SideNav from "../utils/SideNav";
 
 export default function Trades() {
     const { user, selectedAccId } = useAuth();
