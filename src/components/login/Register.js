@@ -38,7 +38,6 @@ export default function Register(props) {
 
     return (
         <>
-            <Navbar />
             <div className="py-4">
                 <div className="row justify-content-center align-items-center min-vh-50">
                     <div className="col-lg-9">

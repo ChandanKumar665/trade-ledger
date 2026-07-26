@@ -3,7 +3,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "../../hooks/useAuth";
 import { getAccountList } from "../../services/accounts";
 import Actions from "../utils/Actions";
-import Navbar from "../utils/Navbar";
 import { captialize, formattedCurrency } from "../utils/utils";
 import AddUpdateAccount from "./AddUpdateAccount";
 import DeleteAccount from "./DeleteAccount";
@@ -38,12 +37,11 @@ export default function Accounts() {
         }
     }, [sync, user])
 
-    return <>
-        <Navbar active_id='acc' />
-        <div className="mb-2">
-            <AddUpdateAccount {...{ ...editOps, setEditOps, sync, setSync }} />
-        </div>
-        <div className="">
+    return (
+        <>
+            <div className="mb-2">
+                <AddUpdateAccount {...{ ...editOps, setEditOps, sync, setSync }} />
+            </div>
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -93,8 +91,6 @@ export default function Accounts() {
             </table>
             <ToastContainer autoClose={1000} />
             <DeleteAccount {...{ ...deleteOps, sync, setSync }} />
-
-        </div>
-    </>
-
+        </>
+    )
 }

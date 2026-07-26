@@ -46,7 +46,6 @@ export default function Login2() {
 
     return (
         <>
-            <Navbar />
             <div className="py-4">
                 <div className="row justify-content-center align-items-center min-vh-50">
                     <div className="col-lg-9">

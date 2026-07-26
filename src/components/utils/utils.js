@@ -5,7 +5,7 @@ export function formattedCurrency(amount, curr) {
         style: 'currency',
         currency: curr
     }).format(amount);
-    return value
+    return value > 0 ? `+${value}` : value;
 }
 
 export function captialize(input) {
