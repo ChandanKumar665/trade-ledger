@@ -56,7 +56,6 @@ export default function Dashboard(props) {
         let totalLosingPnl = 0;
         const total = res?.data?.length || 0
         let currentBal = 0;
-        console.log(res)
         res?.data?.map((item, i) => {
             const days = formatDate(item.open_time).date
             if (item.pnl > 0) {
