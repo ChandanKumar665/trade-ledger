@@ -32,31 +32,36 @@ export default function Navbar(props) {
                 <a className="navbar-brand p-2" href="/">
                     <span>📈 Trade Ledger</span>
                 </a>
-                {
-                    finalNav.length > 0 &&
-                    <>
-                        <button
-                            className="navbar-toggler"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#navbarNavAltMarkup"
-                            aria-controls="navbarNavAltMarkup"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon" />
-                        </button>
-                        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div className="navbar-nav">
-                                {
-                                    finalNav.map((item, i) => {
-                                        const isActive = item.key === props.active_id
-                                        return <NavLink key={i} className={`nav-item nav-link ${!isActive ? 'active' : ''}`} to={item.path}>{item.name}</NavLink>
-                                    })
-                                }
-                            </div>
+
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon" />
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    {
+                        finalNav.length > 0 &&
+                        <div className="navbar-nav">
+                            {
+                                finalNav.map((item, i) => {
+                                    return (
+                                        <NavLink
+                                            key={i}
+                                            className={({ isActive }) => `nav-item nav-link ${isActive ? 'active' : ''}`}
+                                            to={item.path}
+                                        >
+                                            {item.name}
+                                        </NavLink>)
+                                })
+                            }
                         </div>
-                    </>
-                }
+                    }
+                </div>
                 {
                     user &&
                     <>
