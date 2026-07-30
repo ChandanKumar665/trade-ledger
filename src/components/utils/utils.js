@@ -16,6 +16,10 @@ export function formatDate(input) {
     return { date: moment(input).format('MMM Do YYYY'), time: moment(input).format('h:mm a') }
 }
 
+export function formatDate2(input) {
+    return { date: moment(input).format('MMM Do YY') }
+}
+
 export function getInitials(name) {
     return name
         .trim()

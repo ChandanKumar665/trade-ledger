@@ -1,6 +1,7 @@
 import ErrorPage from './components/404'
 import Privacy from './components/Privacy'
 import Accounts from "./components/accounts/Accounts"
+import Calendar from './components/calendar/Calendar'
 import Dashboard from './components/dashboard/Dashboard'
 import Home from "./components/home/Home"
 import Login from "./components/login/Login"
@@ -8,29 +9,6 @@ import Register from './components/login/Register'
 import Profile from './components/profile/Profile'
 import Reports from './components/reports/Reports'
 import Trades from "./components/trades/Trades"
-
-export const routes = [
-    {
-        name: 'Login',
-        path: '/login',
-        component: <Login />
-    },
-    {
-        name: 'Dashboard',
-        path: '/dashboard',
-        component: <Dashboard />
-    },
-    {
-        name: 'Trades',
-        path: '/trades',
-        component: <Trades />
-    },
-    {
-        name: 'Accounts',
-        path: '/accounts',
-        component: <Accounts />
-    }
-]
 
 export const publicRoutes = [
     {
@@ -63,7 +41,7 @@ export const protectedRoutes = [
         name: 'Dashboard',
         key: 'dbh',
         path: '/dashboard',
-        icon: 'bi-grid',
+        icon: 'bi bi-house-door',
         component: <Dashboard />
     },
     {
@@ -74,17 +52,17 @@ export const protectedRoutes = [
         component: <Trades />
     },
     {
-        name: 'Accounts',
-        key: 'acc',
-        path: '/accounts',
-        icon: 'bi-wallet2',
-        component: <Accounts />
+        name: 'Calendar P&L',
+        key: 'cal',
+        path: '/calendar',
+        icon: 'bi bi-calendar3',
+        component: <Calendar />
     },
     {
         name: 'Analytics',
         key: 'aly',
         path: '/analytics',
-        icon: 'bi-pie-chart',
+        icon: 'bi bi-graph-up',
         component: <Accounts />
     },
     {
@@ -93,6 +71,13 @@ export const protectedRoutes = [
         path: '/reports',
         icon: 'bi-file-earmark-text',
         component: <Reports />
+    },
+    {
+        name: 'Accounts',
+        key: 'acc',
+        path: '/accounts',
+        icon: 'bi-wallet2',
+        component: <Accounts />
     },
     {
         name: 'Profile',

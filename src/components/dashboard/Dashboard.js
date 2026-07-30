@@ -3,7 +3,7 @@ import { Chart } from "react-google-charts";
 import { ToastContainer } from 'react-toastify';
 import { useAuth } from "../../hooks/useAuth";
 import Navbar from "../utils/Navbar";
-import { formatDate, formattedCurrency } from "../utils/utils";
+import { formatDate, formatDate2, formattedCurrency } from "../utils/utils";
 import { Line, Doughnut } from "react-chartjs-2";
 import { getTradeStats } from "../../services/trade";
 import Filter from "../utils/Filter";
@@ -57,7 +57,7 @@ export default function Dashboard(props) {
         const total = res?.data?.length || 0
         let currentBal = 0;
         res?.data?.map((item, i) => {
-            const days = formatDate(item.open_time).date
+            const days = formatDate2(item.open_time).date
             if (item.pnl > 0) {
                 win += 1
                 totalWinPnl += (item.pnl)
