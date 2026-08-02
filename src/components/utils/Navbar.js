@@ -5,6 +5,9 @@ import { useAuth } from '../../hooks/useAuth';
 import "./navbar.css";
 import { getInitials } from './utils';
 import { publicRoutes } from '../../routes';
+import { logoutUser } from '../../services/auth';
+import { BRAND_CONFIG } from '../../config';
+import logo from "../../asset/logo.png";
 
 export default function Navbar(props) {
     const { user, logout, updateSelectedAccount, selectedAccId, accountList } = useAuth();
@@ -12,7 +15,8 @@ export default function Navbar(props) {
 
     const finalNav = !user && publicRoutes
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        const res = await logoutUser();
         logout();
         navigate('/')
     }
@@ -21,7 +25,7 @@ export default function Navbar(props) {
         updateSelectedAccount(e.target.value)
     }
     useEffect(() => {
-        if (accountList.length > 0) {
+        if (accountList?.length > 0) {
             updateSelectedAccount(selectedAccId || accountList[0])
         }
     }, [accountList, selectedAccId])
@@ -29,10 +33,19 @@ export default function Navbar(props) {
     return (
         <div className='shadow-light mb-1'>
             <nav className="navbar navbar-expand-lg navbar-dark shadow px-2">
-                <a className="navbar-brand p-2" href="/">
-                    <span>📈 Trade Ledger</span>
+                <a className="navbar-brand p-2 logo-container" href="/">
+                    {/* <img src={logo} alt='logo' /> */}
+                    {/* <span class="logo-icon">
+                        📈
+                    </span> */}
+                    <div className="logo-title">
+                        <span className="logo-trade">Trade</span>
+                        <span className="logo-memo">Memo</span>
+                    </div>
+                    <div className="logo-tagline">
+                        Journal • Analyze • Improve
+                    </div>
                 </a>
-
                 <button
                     className="navbar-toggler"
                     type="button"

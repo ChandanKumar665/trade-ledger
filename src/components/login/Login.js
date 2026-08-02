@@ -17,9 +17,9 @@ export default function Login2() {
         if (data.otp === '1234') {
             //check user
             const res = await authUser({ phone: data.mobile })
-            if (res?.data?._id) {
+            if (res?.data?.token) {
                 toast[res.type](res.message);
-                login(res.data)
+                login(res.data.token)
                 navigate('/dashboard', { replace: true })
             } else {
                 //user not found

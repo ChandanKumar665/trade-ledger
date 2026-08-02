@@ -49,7 +49,7 @@ export default function Trades() {
         <>
             <Filter {...{ filterData, setFilterData }} />
             <div className="mb-2">
-                <AddUpdateTrade {...{ ...editOps, setEditOps, sync, setSync }} />
+                <AddUpdateTrade {...{ ...editOps, setEditOps, setSync }} />
             </div>
             <div>
                 <table className="table">
@@ -128,7 +128,7 @@ export default function Trades() {
                     </tbody>
                 </table>
                 <ToastContainer autoClose={1000} />
-                <DeleteTrade {...{ ...deleteOps, sync, setSync }} />
+                <DeleteTrade {...{ ...deleteOps, setSync }} />
             </div>
         </>
     )

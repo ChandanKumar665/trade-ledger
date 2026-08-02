@@ -3,14 +3,14 @@ import { deleteAccount } from "../../services/accounts";
 import { toast } from 'react-toastify';
 
 export default function DeleteAccount(props) {
-    const { id, sync, setSync } = props
-    const { user, syncAccList, setSyncAccList } = useAuth();
+    const { id, setSync } = props
+    const { user, setSyncAccList } = useAuth();
 
     const deleteAccountHandler = async () => {
         const res = await deleteAccount({ user_id: user._id, account_id: id });
-        setSync(!sync)
+        setSync(prev => !prev)
         toast[res.type](res.message);
-        setSyncAccList(!syncAccList);
+        setSyncAccList(prev => !prev);
         document.querySelector("#del_acc .btn-close").click();
     }
     return (

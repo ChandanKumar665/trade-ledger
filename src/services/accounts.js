@@ -6,11 +6,13 @@ const headers = {
         'Content-Type': 'application/json'
     }
 }
+const creds = {
+    withCredentials: true
+}
 export async function getAccountList(input) {
     try {
-        const { user_id } = input
         const HOST = `${API_HOST}/api/v1/account/list`
-        const res = await axios.post(HOST, { user_id }, headers)
+        const res = await axios.get(HOST, creds)
         return { ...res.data, type: 'success' }
     } catch (error) {
         return { message: error.message, statusCode: error.status, type: 'error' }
@@ -18,9 +20,9 @@ export async function getAccountList(input) {
 }
 export async function create(input) {
     try {
-        const { user_id, name, initial_cap, curr } = input
+        const { name, initial_cap, curr } = input
         const HOST = `${API_HOST}/api/v1/account`
-        const res = await axios.post(HOST, { user_id, name, initial_cap, curr }, headers)
+        const res = await axios.post(HOST, { name, initial_cap, curr }, creds)
         return { ...res.data, type: 'success' }
     } catch (error) {
         return { message: error.message, statusCode: error.status, type: 'error' }
@@ -28,9 +30,9 @@ export async function create(input) {
 }
 export async function update(input) {
     try {
-        const { user_id, name, initial_cap, curr, account_id } = input
-        const HOST = `${API_HOST}/api/v1/account/update`
-        const res = await axios.post(HOST, { user_id, name, initial_cap, curr, account_id }, headers)
+        const { name, initial_cap, curr, account_id } = input
+        const HOST = `${API_HOST}/api/v1/account/${account_id}`
+        const res = await axios.put(HOST, { name, initial_cap, curr }, creds)
         return { ...res.data, type: 'success' }
     } catch (error) {
         return { message: error.message, statusCode: error.status, type: 'error' }
@@ -38,9 +40,9 @@ export async function update(input) {
 }
 export async function deleteAccount(input) {
     try {
-        const { user_id, account_id } = input
-        const HOST = `${API_HOST}/api/v1/account/remove`
-        const res = await axios.post(HOST, { user_id, account_id }, headers)
+        const { account_id } = input
+        const HOST = `${API_HOST}/api/v1/account/${account_id}`
+        const res = await axios.delete(HOST, {}, creds)
         return { ...res.data, type: 'success' }
     } catch (error) {
         return { message: error.message, statusCode: error.status, type: 'error' }

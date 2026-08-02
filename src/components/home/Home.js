@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
-import Login from "../login/Login";
-import Navbar from "../utils/Navbar";
-import './home.css'
+import { BRAND_CONFIG } from "../../config";
+import './home.css';
 
 export default function Home() {
     return (
@@ -11,8 +10,8 @@ export default function Home() {
                     <div className="row align-items-center">
                         <div className="col-lg-6">
                             <h1>
-                                Track Every Trade.<br />
-                                Grow Every Day.
+                                Journal every trade<br />
+                                <span>Improve every decision</span>
                             </h1>
                             <p className="mt-4">
                                 Analyze your trading performance, manage accounts,
@@ -114,7 +113,7 @@ export default function Home() {
 
                 <div className="container text-center">
 
-                    © 2026 Trade Ledger. All Rights Reserved.
+                    © 2026 {BRAND_CONFIG.name}. All Rights Reserved.
 
                 </div>
 

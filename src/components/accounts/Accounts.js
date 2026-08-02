@@ -41,7 +41,7 @@ export default function Accounts() {
     return (
         <>
             <div className="mb-2">
-                <AddUpdateAccount {...{ ...editOps, setEditOps, sync, setSync }} />
+                <AddUpdateAccount {...{ ...editOps, setEditOps, setSync }} />
             </div>
             <table className="table table-striped">
                 <thead>
@@ -91,7 +91,7 @@ export default function Accounts() {
                 </tbody>
             </table>
             <ToastContainer autoClose={1000} />
-            <DeleteAccount {...{ ...deleteOps, sync, setSync }} />
+            <DeleteAccount {...{ ...deleteOps, setSync }} />
         </>
     )
 }

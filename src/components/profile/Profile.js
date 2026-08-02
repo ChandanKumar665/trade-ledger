@@ -8,11 +8,10 @@ import "./profile.css";
 import SideNav from "../utils/SideNav";
 
 export default function Profile() {
-    const { user } = useAuth();
+    const { user, setSyncUser } = useAuth();
     const [data, setData] = useState({});
     const [edit, setEdit] = useState(false);
     const [userDetails, setUserDetails] = useState({});
-    const [sync, setSync] = useState(false);
 
     const onChangeHandler = (key, val) => {
         setData(prev => ({ ...prev, [key]: val }))
@@ -22,10 +21,9 @@ export default function Profile() {
         if (edit) {
             const isEqual =
                 JSON.stringify({ name: data.name, trading_exp: data.trading_exp, email: data.email, bio: data.bio }) ===
-                JSON.stringify({ name: userDetails.name, trading_exp: userDetails.trading_exp, email: userDetails.email, bio: userDetails.bio })
+                JSON.stringify({ name: user.name, trading_exp: user.trading_exp, email: user.email, bio: user.bio })
             if (!isEqual) {
                 const payload = {
-                    user_id: user._id,
                     name: data.name,
                     email: data.email,
                     trading_exp: data.trading_exp,
@@ -33,33 +31,25 @@ export default function Profile() {
                 }
                 const res = await updateUser(payload);
                 setEdit(prev => false);
-                setSync(prev => !prev);
+                setSyncUser(prev => !prev);
                 return toast[res.type](res.message);
             }
             toast['info']('Update at least one field');
         }
     }
-    const fetchUserDetails = async () => {
-        const res = await getProfile({ user_id: user._id });
-        if (res.success) {
-            setUserDetails(res?.data)
-        }
-    }
+
     useEffect(() => {
         if (edit) {
             setData(prev => ({
                 ...prev,
-                name: userDetails.name,
-                trading_exp: userDetails.trading_exp,
-                email: userDetails.email,
-                bio: userDetails.bio
+                name: user.name,
+                trading_exp: user.trading_exp,
+                email: user.email,
+                bio: user.bio
             }))
         }
     }, [edit]);
 
-    useEffect(() => {
-        fetchUserDetails()
-    }, [sync])
     return (
         <>
             <div className="card">
@@ -70,14 +60,14 @@ export default function Profile() {
                         </div>
                         <div className="col-lg-7">
                             <h2 className="fw-bold mb-2">
-                                {userDetails.name}
+                                {user.name}
                             </h2>
                             <p className="text-muted mb-2">
-                                Trading Experience - {userDetails.trading_exp}
+                                Trading Experience - {user.trading_exp}
                             </p>
                             <span className="badge-soft me-2">
                                 <i className="bi bi-envelope me-1"></i>
-                                {userDetails.email}
+                                {user.email}
                             </span>
                             <span className="badge-soft">
                                 <i className="bi bi-telephone me-1"></i>
@@ -128,7 +118,7 @@ export default function Profile() {
                                 <input
                                     className="form-control"
                                     type="text"
-                                    value={data.name || userDetails.name}
+                                    value={data.name || user.name}
                                     disabled={!edit}
                                     onChange={(e) => onChangeHandler('name', e.target.value)}
                                 />
@@ -141,7 +131,7 @@ export default function Profile() {
                                     className="form-control"
                                     type="email"
                                     disabled={!edit}
-                                    value={data.email || userDetails.email}
+                                    value={data.email || user.email}
                                     onChange={(e) => onChangeHandler('email', e.target.value)}
                                 />
                             </div>
@@ -166,7 +156,7 @@ export default function Profile() {
                                     className="form-control"
                                     type="text"
                                     disabled={!edit}
-                                    value={data.trading_exp || userDetails.trading_exp}
+                                    value={data.trading_exp || user.trading_exp}
                                     onChange={(e) => onChangeHandler('trading_exp', e.target.value)}
                                 />
                             </div>
@@ -178,7 +168,7 @@ export default function Profile() {
                             <textarea
                                 className="form-control"
                                 rows="4"
-                                value={data.bio || userDetails.bio}
+                                value={data.bio || user.bio}
                                 disabled={!edit}
                                 placeholder="Tell us something about yourself..."
                                 onChange={(e) => onChangeHandler('bio', e.target.value)}

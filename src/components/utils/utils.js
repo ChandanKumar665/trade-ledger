@@ -21,8 +21,7 @@ export function formatDate2(input) {
 }
 
 export function getInitials(name) {
-    return name
-        .trim()
+    return name?.trim()
         .split(' ')
         .map(part => part[0])
         .join('')
