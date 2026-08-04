@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { create, update } from "../../services/trade";
 
 export default function AddUpdateTrade(props) {
-    const { sync, setSync, edit, view, account_id, id, symbol, order_type, desc, open_time,
+    const { setSync, edit, view, account_id, id, symbol, order_type, desc, open_time,
         close_time, entry_price, exit_price, qty, pnl, charges, setEditOps } = props
     const [data, setData] = useState({ order_type: 'buy' });
     const { user, selectedAccId } = useAuth();
@@ -30,7 +30,7 @@ export default function AddUpdateTrade(props) {
         }
         const res = await update(payload);
         toast[res.type](res.message);
-        setSync(!sync)
+        setSync(prev => !prev)
         document.querySelector("#add_up_trade .btn-close").click();
         reset();
     }
@@ -46,12 +46,11 @@ export default function AddUpdateTrade(props) {
             "qty": data.qty,
             "pnl": data.pnl,
             "charges": data.charges,
-            "account_id": selectedAccId,
-            "user_id": user._id
+            "account_id": selectedAccId
         }
         const res = await create(payload);
         toast[res.type](res.message);
-        setSync(!sync)
+        setSync(prev => !prev)
         document.querySelector("#add_up_trade .btn-close").click();
         reset();
     }

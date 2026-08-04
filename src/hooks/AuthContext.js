@@ -1,46 +1,56 @@
 import { createContext, useEffect, useState } from "react"
 import { getAccountList } from "../services/accounts";
+import { getProfile } from "../services/user";
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        const user = localStorage.getItem("user");
-        return user ? JSON.parse(user) : null;
-    });
+    const [user, setUser] = useState();
     const [selectedAccId, setSelectedAccId] = useState()
     const [accountList, setAccountList] = useState([]);
-    const [syncAccList, setSyncAccList] = useState(false)
+    const [syncAccList, setSyncAccList] = useState(false);
+    const [syncUser, setSyncUser] = useState(false);
 
     const logout = () => {
-        localStorage.removeItem("user");
         setUser(null);
         setSelectedAccId(null);
         setAccountList([]);
     }
-    const login = async (data) => {
-        localStorage.setItem('user', JSON.stringify(data))
-        setUser(data);
-        setSyncAccList(!syncAccList);
+    const login = async (token) => {
+        setSyncUser(prev => !prev)
+        setSyncAccList(prev => !prev);
     }
     const updateSelectedAccount = (id) => {
         setSelectedAccId(id)
     }
-    const get = async () => {
-        const res = await getAccountList({ user_id: user._id });
-        if (res?.statusCode === 200) {
-            setAccountList(res.data)
-        }
+    const fetchUsersProfile = async () => {
+        const profile = await getProfile()
+        setUser(profile.data)
+    }
+    const fetchAccounts = async () => {
+        const accounts = await getAccountList()
+        setAccountList(accounts.data)
     }
     useEffect(() => {
-        if (user) {
-            get()
-        }
+        fetchAccounts()
     }, [syncAccList]);
 
+    useEffect(() => {
+        fetchUsersProfile()
+    }, [syncUser]);
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, updateSelectedAccount, selectedAccId, accountList, syncAccList, setSyncAccList }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                login,
+                logout,
+                updateSelectedAccount,
+                selectedAccId,
+                accountList,
+                setSyncAccList,
+                setSyncUser
+            }}>
             {children}
         </AuthContext.Provider>
     )

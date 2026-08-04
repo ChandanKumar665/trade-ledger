@@ -3,28 +3,41 @@ import './App.css';
 import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 import "./chartConfig";
+import ProtectedLayout from './layout/ProtectedLayout';
+import PublicLayout from './layout/PublicLayout';
 import { common, protectedRoutes, publicRoutes } from './routes';
 
 function App() {
-  // const { user } = useAuth();
   return (
     <BrowserRouter >
       <Routes>
         {/* Public Routes */}
-        <Route element={<PublicRoute />}>
+        <Route
+          element={
+            <PublicRoute>
+              <PublicLayout />
+            </PublicRoute>
+          }
+        >
           {
             [...publicRoutes, ...common].map(route => <Route path={route.path} element={route.component} />)
           }
         </Route>
 
         {/* Protected Routes */}
-        <Route element={<ProtectedRoute />}>
+        <Route
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout />
+            </ProtectedRoute>
+          }
+        >
           {
             [...protectedRoutes, ...common].map(route => <Route path={route.path} element={route.component} />)
           }
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

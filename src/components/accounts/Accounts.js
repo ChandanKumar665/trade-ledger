@@ -3,7 +3,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "../../hooks/useAuth";
 import { getAccountList } from "../../services/accounts";
 import Actions from "../utils/Actions";
-import Navbar from "../utils/Navbar";
 import { captialize, formattedCurrency } from "../utils/utils";
 import AddUpdateAccount from "./AddUpdateAccount";
 import DeleteAccount from "./DeleteAccount";
@@ -39,67 +38,60 @@ export default function Accounts() {
         }
     }, [sync, user])
 
-    return <>
-        <Navbar active_id='acc' />
-        <div className="row p-2">
-            <div className="col-lg-2 p-2">
-                <SideNav active_id='acc' />
+    return (
+        <>
+            <div className="mb-2">
+                <AddUpdateAccount {...{ ...editOps, setEditOps, setSync }} />
             </div>
-            <main className="col-lg-10 p-2">
-                <div className="mb-2">
-                    <AddUpdateAccount {...{ ...editOps, setEditOps, sync, setSync }} />
-                </div>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            {
-                                thead.map((item, i) => <th key={i} scope="col">{item.name}</th>)
-                            }
-
-                        </tr>
-                    </thead>
-                    <tbody>
+            <table className="table table-striped">
+                <thead>
+                    <tr>
                         {
-                            data.map((item, i) => {
-                                const removeProps = {
-                                    handler: delAcc,
-                                    modal_id: 'del_acc',
-                                    params: { id: item._id, name: item.name }
-                                }
-                                const editProps = {
-                                    handler: editAccount,
-                                    modal_id: 'add_acc',
-                                    params: { id: item._id, name: item.name, curr: item.curr, initial_cap: item.initial_cap, edit: true }
-                                }
-                                const viewProps = {
-                                    handler: editAccount,
-                                    modal_id: 'add_acc',
-                                    params: { id: item._id, name: item.name, curr: item.curr, initial_cap: item.initial_cap, view: true }
-                                }
-                                return (
-                                    <tr key={i}>
-                                        <td>{item.name}</td>
-                                        <td>{captialize(item.curr)}</td>
-                                        <td>{`${formattedCurrency(item.initial_cap, item.curr)}`}</td>
-                                        <td>{item?.createdAt}</td>
-                                        <td>
-                                            <Actions
-                                                view={viewProps}
-                                                edit={editProps}
-                                                remove={removeProps}
-                                            />
-                                        </td>
-                                    </tr>
-                                )
+                            thead.map((item, i) => <th key={i} scope="col">{item.name}</th>)
+                        }
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        data.map((item, i) => {
+                            const removeProps = {
+                                handler: delAcc,
+                                modal_id: 'del_acc',
+                                params: { id: item._id, name: item.name }
                             }
+                            const editProps = {
+                                handler: editAccount,
+                                modal_id: 'add_acc',
+                                params: { id: item._id, name: item.name, curr: item.curr, initial_cap: item.initial_cap, edit: true }
+                            }
+                            const viewProps = {
+                                handler: editAccount,
+                                modal_id: 'add_acc',
+                                params: { id: item._id, name: item.name, curr: item.curr, initial_cap: item.initial_cap, view: true }
+                            }
+                            return (
+                                <tr key={i}>
+                                    <td>{item.name}</td>
+                                    <td>{captialize(item.curr)}</td>
+                                    <td>{`${formattedCurrency(item.initial_cap, item.curr)}`}</td>
+                                    <td>{item?.createdAt}</td>
+                                    <td>
+                                        <Actions
+                                            view={viewProps}
+                                            edit={editProps}
+                                            remove={removeProps}
+                                        />
+                                    </td>
+                                </tr>
                             )
                         }
-                    </tbody>
-                </table>
-                <ToastContainer autoClose={1000} />
-                <DeleteAccount {...{ ...deleteOps, sync, setSync }} />
-            </main>
-        </div>
-    </>
-
+                        )
+                    }
+                </tbody>
+            </table>
+            <ToastContainer autoClose={1000} />
+            <DeleteAccount {...{ ...deleteOps, setSync }} />
+        </>
+    )
 }

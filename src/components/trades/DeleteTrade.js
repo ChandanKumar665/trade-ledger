@@ -3,11 +3,11 @@ import { toast } from 'react-toastify';
 import { remove } from "../../services/trade";
 
 export default function DeleteTrade(props) {
-    const { id, account_id, sync, setSync, name } = props
+    const { id, account_id, setSync, name } = props
     const { user } = useAuth();
     const deleteAccountHandler = async () => {
-        const res = await remove({ user_id: user._id, account_id, trade_id: id });
-        setSync(!sync)
+        const res = await remove({ account_id, trade_id: id });
+        setSync(prev => !prev)
         toast[res.type](res.message);
         document.querySelector("#del_trade .btn-close").click();
     }

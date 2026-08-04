@@ -5,7 +5,7 @@ export function formattedCurrency(amount, curr) {
         style: 'currency',
         currency: curr
     }).format(amount);
-    return value
+    return value > 0 ? `+${value}` : value;
 }
 
 export function captialize(input) {
@@ -16,9 +16,12 @@ export function formatDate(input) {
     return { date: moment(input).format('MMM Do YYYY'), time: moment(input).format('h:mm a') }
 }
 
+export function formatDate2(input) {
+    return { date: moment(input).format('MMM Do YY') }
+}
+
 export function getInitials(name) {
-    return name
-        .trim()
+    return name?.trim()
         .split(' ')
         .map(part => part[0])
         .join('')

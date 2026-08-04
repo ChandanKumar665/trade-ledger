@@ -1,15 +1,22 @@
 
 import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from '../../hooks/useAuth';
 import "./navbar.css";
 import { getInitials } from './utils';
+import { publicRoutes } from '../../routes';
+import { logoutUser } from '../../services/auth';
+import { BRAND_CONFIG } from '../../config';
+import logo from "../../asset/logo.png";
 
 export default function Navbar(props) {
     const { user, logout, updateSelectedAccount, selectedAccId, accountList } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+    const finalNav = !user && publicRoutes
+
+    const handleLogout = async () => {
+        const res = await logoutUser();
         logout();
         navigate('/')
     }
@@ -18,7 +25,7 @@ export default function Navbar(props) {
         updateSelectedAccount(e.target.value)
     }
     useEffect(() => {
-        if (accountList.length > 0) {
+        if (accountList?.length > 0) {
             updateSelectedAccount(selectedAccId || accountList[0])
         }
     }, [accountList, selectedAccId])
@@ -26,10 +33,47 @@ export default function Navbar(props) {
     return (
         <div className='shadow-light mb-1'>
             <nav className="navbar navbar-expand-lg navbar-dark shadow px-2">
-                <a className="navbar-brand p-2" href="/">
-                    <span>📈 Trade Ledger</span>
+                <a className="navbar-brand p-2 logo-container" href="/">
+                    {/* <img src={logo} alt='logo' /> */}
+                    {/* <span class="logo-icon">
+                        📈
+                    </span> */}
+                    <div className="logo-title">
+                        <span className="logo-trade">Trade</span>
+                        <span className="logo-memo">Memo</span>
+                    </div>
+                    <div className="logo-tagline">
+                        Journal • Analyze • Improve
+                    </div>
                 </a>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon" />
+                </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    {
+                        finalNav.length > 0 &&
+                        <div className="navbar-nav">
+                            {
+                                finalNav.map((item, i) => {
+                                    return (
+                                        <NavLink
+                                            key={i}
+                                            className={({ isActive }) => `nav-item nav-link ${isActive ? 'active' : ''}`}
+                                            to={item.path}
+                                        >
+                                            {item.name}
+                                        </NavLink>)
+                                })
+                            }
+                        </div>
+                    }
                 </div>
                 {
                     user &&
@@ -63,7 +107,8 @@ export default function Navbar(props) {
                                     <li><button className="dropdown-item" type="button" onClick={handleLogout}>Logout</button></li>
                                 </ul>
                             </div>
-                        </div></>
+                        </div>
+                    </>
                 }
             </nav>
         </div>

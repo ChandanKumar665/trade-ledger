@@ -1,6 +1,7 @@
 import ErrorPage from './components/404'
 import Privacy from './components/Privacy'
 import Accounts from "./components/accounts/Accounts"
+import Calendar from './components/calendar/Calendar'
 import Dashboard from './components/dashboard/Dashboard'
 import Home from "./components/home/Home"
 import Login from "./components/login/Login"
@@ -12,21 +13,25 @@ import Trades from "./components/trades/Trades"
 export const publicRoutes = [
     {
         name: 'Home',
+        key: 'hm',
         path: '/',
         component: <Home />
     },
     {
         name: 'Login',
+        key: 'log',
         path: '/login',
         component: <Login />
     },
     {
         name: 'Register',
+        key: 'reg',
         path: '/signup',
         component: <Register />
     },
     {
         name: 'Privacy',
+        key: 'prv',
         path: '/privacy',
         component: <Privacy />
     }
@@ -36,7 +41,7 @@ export const protectedRoutes = [
         name: 'Dashboard',
         key: 'dbh',
         path: '/dashboard',
-        icon: 'bi-grid',
+        icon: 'bi bi-house-door',
         component: <Dashboard />
     },
     {
@@ -47,17 +52,17 @@ export const protectedRoutes = [
         component: <Trades />
     },
     {
-        name: 'Accounts',
-        key: 'acc',
-        path: '/accounts',
-        icon: 'bi-wallet2',
-        component: <Accounts />
+        name: 'Calendar P&L',
+        key: 'cal',
+        path: '/calendar',
+        icon: 'bi bi-calendar3',
+        component: <Calendar />
     },
     {
         name: 'Analytics',
         key: 'aly',
         path: '/analytics',
-        icon: 'bi-pie-chart',
+        icon: 'bi bi-graph-up',
         component: <Accounts />
     },
     {
@@ -66,6 +71,13 @@ export const protectedRoutes = [
         path: '/reports',
         icon: 'bi-file-earmark-text',
         component: <Reports />
+    },
+    {
+        name: 'Accounts',
+        key: 'acc',
+        path: '/accounts',
+        icon: 'bi-wallet2',
+        component: <Accounts />
     },
     {
         name: 'Profile',

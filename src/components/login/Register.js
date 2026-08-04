@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
-import { createUser } from "../../services/user";
+import { createUser } from "../../services/auth";
 import Navbar from "../utils/Navbar";
 import Brand from "./Brand";
 import './login.css';
@@ -37,7 +37,6 @@ export default function Register(props) {
 
     return (
         <>
-            <Navbar />
             <div className="py-4">
                 <div className="row justify-content-center align-items-center min-vh-50">
                     <div className="col-lg-9">

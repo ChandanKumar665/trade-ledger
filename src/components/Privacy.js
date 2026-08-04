@@ -3,9 +3,8 @@ import Navbar from "./utils/Navbar";
 export default function Privacy() {
     return (
         <>
-            <Navbar active_id='pp' />
             <div className="mb-2">
-                <div class="card shadow-sm border-0">
+                <div class="border-0">
                     <div class="card-body p-5">
 
                         <h1 class="display-5 fw-bold mb-2">Privacy Policy</h1>
@@ -198,7 +197,6 @@ export default function Privacy() {
                             investment, legal or tax advice. All trading decisions are the sole
                             responsibility of the user.
                         </div>
-
                     </div>
                 </div>
             </div>

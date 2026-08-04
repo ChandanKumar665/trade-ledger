@@ -9,8 +9,10 @@ export default function SideNav(props) {
             <div class="nav flex-column gap-2">
                 {
                     userNav.map((item, i) => {
-                        const isActive = item.key === props.active_id
-                        return (<NavLink key={i} disabled={item.disabled} className={`nav-item nav-link ${isActive ? 'active' : ''}`} to={item.path}>
+                        return (<NavLink key={i}
+                            disabled={item.disabled}
+                            className={({ isActive }) => `nav-item nav-link ${isActive ? 'active' : ''}`}
+                            to={item.path}>
                             <i class={`bi ${item.icon}`}></i> &nbsp;{item.name}
                         </NavLink>)
                     })

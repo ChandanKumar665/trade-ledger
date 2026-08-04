@@ -4,9 +4,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { create, update } from "../../services/accounts";
 
 export default function AddUpdateAccount(props) {
-    const { sync, setSync, edit, view, id, name, curr, initial_cap, setEditOps } = props
+    const { setSync, edit, view, id, name, curr, initial_cap, setEditOps, } = props
     const [data, setData] = useState({ curr: 'inr' });
-    const { user, syncAccList, setSyncAccList } = useAuth();
+    const { user, setSyncAccList } = useAuth();
 
     const modifyAccount = async () => {
         const res = await update({
@@ -17,7 +17,8 @@ export default function AddUpdateAccount(props) {
             "account_id": id
         });
         toast[res.type](res.message);
-        setSync(!sync)
+        setSync(prev => !prev);
+        setSyncAccList(prev => !prev);
         document.querySelector("#add_acc .btn-close").click();
     }
     const createAccount = async () => {
@@ -28,9 +29,9 @@ export default function AddUpdateAccount(props) {
             "user_id": user._id
         });
         toast[res.type](res.message);
-        setSync(!sync)
+        setSync(prev => !prev)
         //updating context
-        setSyncAccList(!syncAccList);
+        setSyncAccList(prev => !prev);
         document.querySelector("#add_acc .btn-close").click();
     }
 

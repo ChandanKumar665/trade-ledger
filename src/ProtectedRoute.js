@@ -1,9 +1,9 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../src/hooks/useAuth";
 
-export default function ProtectedRoute() {
+export default function ProtectedRoute({ children }) {
     const { user } = useAuth();
     return user
-        ? <Outlet />
+        ? children
         : <Navigate to="/login" replace />;
 }
