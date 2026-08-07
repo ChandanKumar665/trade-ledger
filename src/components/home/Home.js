@@ -106,18 +106,6 @@ export default function Home() {
                     </div>
 
                 </section> */}
-
-            {/* <!-- Footer --> */}
-
-            <footer>
-
-                <div className="container text-center">
-
-                    © 2026 {BRAND_CONFIG.name}. All Rights Reserved.
-
-                </div>
-
-            </footer>
         </>
     )
 }
