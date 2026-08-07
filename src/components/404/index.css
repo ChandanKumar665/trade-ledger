@@ -8,27 +8,23 @@
 }
 
 .coming-card {
-    padding: 40px;
+    padding: 60px;
     width: 100%;
-    box-shadow: 0 25px 60px rgba(15, 23, 42, .08);
+    /* box-shadow: 0 25px 60px rgba(15, 23, 42, .08); */
 }
 
 h1 {
-
-    font-size: 52px;
-
+    font-size: clamp(2rem, 6vw, 3.5rem);
     font-weight: 800;
-
     color: #0F172A;
-
     margin-top: 35px;
-
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-word;
 }
 
 .lead {
-
     color: #64748B;
-
 }
 
 .feature {
