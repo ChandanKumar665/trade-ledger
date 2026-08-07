@@ -14,7 +14,7 @@ function App() {
     dashboardRoutes = [...protectedRoutes, ...common];
   } else {
     pubRoutes = [...underConstruction];
-    dashboardRoutes = [...underConstruction]
+    dashboardRoutes = [...underConstruction];
   }
   return (
     <BrowserRouter >

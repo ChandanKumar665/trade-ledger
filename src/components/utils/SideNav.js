@@ -5,8 +5,8 @@ import "./navbar.css";
 export default function SideNav(props) {
     const userNav = protectedRoutes;
     return (
-        <nav class="sidebar p-4">
-            <div class="nav flex-column gap-2">
+        <nav className="sidebar p-4">
+            <div className="nav flex-column gap-2">
                 {
                     userNav.map((item, i) => {
                         return (<NavLink key={i}

@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react"
 import { getAccountList } from "../services/accounts";
 import { getProfile } from "../services/user";
+import { getLoggedInUser } from "../services/auth";
 
 export const AuthContext = createContext()
 
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
         setAccountList([]);
     }
     const login = async (token) => {
+        setUser(true);
         setSyncUser(prev => !prev)
         setSyncAccList(prev => !prev);
     }
@@ -29,15 +31,31 @@ export const AuthProvider = ({ children }) => {
     }
     const fetchAccounts = async () => {
         const accounts = await getAccountList()
-        setAccountList(accounts.data)
+        setAccountList(accounts.data || [])
     }
     useEffect(() => {
-        fetchAccounts()
-    }, [syncAccList]);
+        if (user) {
+            fetchAccounts()
+        }
+    }, [syncAccList, user]);
 
     useEffect(() => {
-        fetchUsersProfile()
+        if (user) {
+            fetchUsersProfile()
+        }
     }, [syncUser]);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const res = await getLoggedInUser()
+                setUser(res.data);
+            } catch {
+                setUser(null);
+            }
+        };
+        checkAuth();
+    }, [])
 
     return (
         <AuthContext.Provider

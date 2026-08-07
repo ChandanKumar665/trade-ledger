@@ -1,22 +1,32 @@
-import Navbar from "../utils/Navbar";
-import './login.css';
-import { useState } from "react"
-import { useAuth } from "../../hooks/useAuth"
-import { useNavigate, Navigate } from "react-router-dom";
-import { authUser } from "../../services/auth";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
+import { authUser } from "../../services/auth";
+import { sendMobileOTP } from "../../services/firebaseSrvc";
 import Brand from "./Brand";
+import './login.css';
+
+const COUNTRY_CODE = '+91'
 
 export default function Login2() {
     const { user, login } = useAuth();
-    const [isOtpSent, setIsOtpSend] = useState(false)
+    const [isOtpSent, setIsOtpSend] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [btnText, setBtnText] = useState('Send OTP')
     const [data, setData] = useState({})
     const navigate = useNavigate();
 
-    const submit = async (e) => {
+
+    const goToSignUp = (state) => {
+        navigate('/signup', state);
+    }
+    const devLogin = async (e) => {
+        setIsLoading(false)
+        setBtnText('Submit');
         if (data.otp === '1234') {
             //check user
-            const res = await authUser({ phone: data.mobile })
+            const res = await authUser({ phone: data.mobile, fbtoken: '' })
             if (res?.data?.token) {
                 toast[res.type](res.message);
                 login(res.data.token)
@@ -24,26 +34,80 @@ export default function Login2() {
             } else {
                 //user not found
                 toast[res.type](res.message);
-                navigate('/signup', {
+                goToSignUp({
                     state: {
                         phone: data.mobile
                     }
-                });
+                })
             }
         } else {
             toast['error']('Invalid OTP')
         }
     }
-    const sendOTP = () => {
-        setIsOtpSend(true)
+
+    const submit = async (e) => {
+        //verify
+        try {
+            if (!data.otp) {
+                return toast['error']('Please enter OTP');
+            }
+            setIsLoading(true);
+            setBtnText('Submitting...')
+            const result = await window.confirmationResult.confirm(data.otp);
+            if (!result) {
+                return toast['error']('Invalid OTP')
+            }
+            const firebaseToken = await result.user.getIdToken();
+            //send fbcode to server
+            const res = await authUser({ phone: data.mobile, fbtoken: firebaseToken })
+            if (res?.data?.token) {
+                toast[res.type](res.message);
+                login(res.data.token)
+                navigate('/dashboard', { replace: true })
+            } else {
+                //user not found
+                toast[res.type](res.message);
+                goToSignUp({
+                    state: {
+                        phone: data.mobile
+                    }
+                })
+            }
+        } catch (err) {
+            reset()
+            toast['error'](err.message)
+        }
+    }
+    const reset = () => {
+        setIsLoading(false);
+        setBtnText('Send OTP');
+    }
+    const sendOTP = async () => {
+        try {
+            if (!data.mobile || data.mobile.length != 10) {
+                return toast['error']('Invalid phone no')
+            }
+            setIsLoading(true);
+            setBtnText('Sending OTP...');
+            await sendMobileOTP(`${COUNTRY_CODE}${data.mobile}`)
+            setIsOtpSend(true);
+            toast['success']('OTP Sent');
+            setBtnText('Submit');
+            setIsLoading(false);
+        } catch (error) {
+            toast['error']('Something went wrong');
+            reset();
+        }
+
     }
 
     const changeHandler = (key, value) => {
         setData(prev => ({ ...prev, [key]: value }))
     }
 
-    const btnProps = isOtpSent ? { btnHandler: submit, btnText: 'Submit' } : { btnHandler: sendOTP, btnText: 'Send OTP' }
-
+    const btnProps = isOtpSent ?
+        { btnHandler: submit, btnText: 'Submit' } :
+        { btnHandler: sendOTP, btnText: 'Send OTP' };
     return (
         <>
             <div className="py-4">
@@ -72,7 +136,7 @@ export default function Login2() {
                                                 </label>
                                                 <div className="input-group">
                                                     <span className="input-group-text">
-                                                        <i className="bi bi-phone"></i>
+                                                        <i className="bi bi-phone"></i> +91
                                                     </span>
                                                     <input
                                                         type="number"
@@ -105,10 +169,20 @@ export default function Login2() {
                                             </div>
                                             <button
                                                 type="button"
+                                                disabled={isLoading}
                                                 onClick={btnProps.btnHandler}
                                                 className="btn btn-primary btn-login w-100"
                                             >
-                                                {btnProps.btnText}
+                                                {
+                                                    isLoading && <span className="btn-loader">
+                                                        <span
+                                                            className="spinner-border spinner-border-sm me-2"
+                                                            role="status"
+                                                            aria-hidden="true"
+                                                        />
+                                                    </span>
+                                                }
+                                                {btnText}
                                             </button>
                                         </form>
                                         <div className="divider my-4">
@@ -131,6 +205,7 @@ export default function Login2() {
                                             </div>
 
                                         </div>
+                                        <div id="recaptcha-container"></div>
                                     </div>
                                 </div>
                             </div>
