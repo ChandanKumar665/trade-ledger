@@ -1,4 +1,5 @@
 import ErrorPage from './components/404'
+import UnderConstruction from './components/404/UnderConstruction'
 import Privacy from './components/Privacy'
 import Accounts from "./components/accounts/Accounts"
 import Calendar from './components/calendar/Calendar'
@@ -97,7 +98,14 @@ export const protectedRoutes = [
 export const common = [
     {
         name: 'Error',
-        path: '/error',
+        path: '*',
         component: <ErrorPage />
+    }
+]
+export const underConstruction = [
+    {
+        name: 'Error',
+        path: '*',
+        component: <UnderConstruction />
     }
 ]

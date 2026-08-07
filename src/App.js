@@ -5,9 +5,17 @@ import PublicRoute from './PublicRoute';
 import "./chartConfig";
 import ProtectedLayout from './layout/ProtectedLayout';
 import PublicLayout from './layout/PublicLayout';
-import { common, protectedRoutes, publicRoutes } from './routes';
+import { common, protectedRoutes, publicRoutes, underConstruction } from './routes';
 
 function App() {
+  let pubRoutes, dashboardRoutes = [];
+  if (process.env.REACT_APP_ENV !== 'dev') {
+    pubRoutes = [...publicRoutes, ...common];
+    dashboardRoutes = [...protectedRoutes, ...common];
+  } else {
+    pubRoutes = [...underConstruction];
+    dashboardRoutes = [...underConstruction]
+  }
   return (
     <BrowserRouter >
       <Routes>
@@ -20,7 +28,7 @@ function App() {
           }
         >
           {
-            [...publicRoutes, ...common].map(route => <Route path={route.path} element={route.component} />)
+            pubRoutes.map(route => <Route path={route.path} element={route.component} />)
           }
         </Route>
 
@@ -33,7 +41,7 @@ function App() {
           }
         >
           {
-            [...protectedRoutes, ...common].map(route => <Route path={route.path} element={route.component} />)
+            dashboardRoutes.map(route => <Route path={route.path} element={route.component} />)
           }
         </Route>
       </Routes>

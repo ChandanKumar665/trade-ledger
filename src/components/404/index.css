@@ -1,0 +1,86 @@
+.coming-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at top right, #2563EB20, transparent 35%),
+        radial-gradient(circle at bottom left, #16A34A20, transparent 35%);
+}
+
+.coming-card {
+    padding: 40px;
+    width: 100%;
+    box-shadow: 0 25px 60px rgba(15, 23, 42, .08);
+}
+
+h1 {
+
+    font-size: 52px;
+
+    font-weight: 800;
+
+    color: #0F172A;
+
+    margin-top: 35px;
+
+}
+
+.lead {
+
+    color: #64748B;
+
+}
+
+.feature {
+
+    background: #F8FAFC;
+
+    border-radius: 15px;
+
+    padding: 18px;
+
+    transition: .3s;
+
+}
+
+.feature:hover {
+
+    transform: translateY(-4px);
+
+}
+
+.icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #EFF6FF;
+
+    color: #2563EB;
+
+    font-size: 24px;
+
+}
+
+.launch {
+    background: #2563EB;
+    color: white;
+    border-radius: 50px;
+    padding: 14px 35px;
+}
+
+.launch:hover {
+    background: #1D4ED8;
+    color: white;
+}
