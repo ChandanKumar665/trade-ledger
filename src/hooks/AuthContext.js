@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
     const fetchAccounts = async () => {
         const accounts = await getAccountList()
         setAccountList(accounts.data || [])
+        setSelectedAccId(accounts.data[0]._id)
     }
     useEffect(() => {
         if (user) {

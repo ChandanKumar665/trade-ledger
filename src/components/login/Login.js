@@ -51,8 +51,12 @@ export default function Login2() {
             if (!data.otp) {
                 return toast['error']('Please enter OTP');
             }
+            // if (process.env.REACT_APP_ENV === 'dev') {
+            //     return devLogin()
+            // }
             setIsLoading(true);
             setBtnText('Submitting...')
+
             const result = await window.confirmationResult.confirm(data.otp);
             if (!result) {
                 return toast['error']('Invalid OTP')
@@ -89,7 +93,10 @@ export default function Login2() {
             }
             setIsLoading(true);
             setBtnText('Sending OTP...');
-            await sendMobileOTP(`${COUNTRY_CODE}${data.mobile}`)
+            // if (process.env.REACT_APP_ENV === 'production') {
+            //     await sendMobileOTP(`${COUNTRY_CODE}${data.mobile}`)
+            // }
+            await sendMobileOTP(`${COUNTRY_CODE}${data.mobile}`);
             setIsOtpSend(true);
             toast['success']('OTP Sent');
             setBtnText('Submit');
