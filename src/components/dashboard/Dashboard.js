@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { Chart } from "react-google-charts";
+import { Doughnut, Line } from "react-chartjs-2";
 import { ToastContainer } from 'react-toastify';
 import { useAuth } from "../../hooks/useAuth";
-import Navbar from "../utils/Navbar";
-import { formatDate, formatDate2, formattedCurrency } from "../utils/utils";
-import { Line, Doughnut } from "react-chartjs-2";
 import { getTradeStats } from "../../services/trade";
 import Filter from "../utils/Filter";
+import { formatDate2, formattedCurrency } from "../utils/utils";
 import "./dashboard.css";
-import SideNav from "../utils/SideNav";
 
 export default function Dashboard(props) {
     const { user, logout, selectedAccId, accountList } = useAuth();
@@ -47,7 +44,7 @@ export default function Dashboard(props) {
     };
 
     const get = async () => {
-        const payload = { user_id: user._id, account_id: selectedAccId, filter: filterData };
+        const payload = { account_id: selectedAccId, filter: filterData };
         const res = await getTradeStats(payload);
         const labels = []
         const datasets = []

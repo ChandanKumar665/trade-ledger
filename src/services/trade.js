@@ -59,7 +59,7 @@ export async function update(input) {
 
 export async function getTradeStats(input) {
     try {
-        const { user_id, account_id, filter } = input
+        const { account_id, filter } = input
         const HOST = `${API_HOST}/api/v1/trade/stats`
         const res = await axios.post(HOST, {
             account_id, filter

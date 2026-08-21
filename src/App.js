@@ -9,13 +9,8 @@ import { common, protectedRoutes, publicRoutes, underConstruction } from './rout
 
 function App() {
   let pubRoutes, dashboardRoutes = [];
-  if (process.env.REACT_APP_ENV === 'dev') {
-    pubRoutes = [...publicRoutes, ...common];
-    dashboardRoutes = [...protectedRoutes, ...common];
-  } else {
-    pubRoutes = [...underConstruction];
-    dashboardRoutes = [...underConstruction]
-  }
+  pubRoutes = [...publicRoutes, ...common];
+  dashboardRoutes = [...protectedRoutes, ...common];
   return (
     <BrowserRouter >
       <Routes>

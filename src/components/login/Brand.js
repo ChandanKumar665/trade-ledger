@@ -7,7 +7,7 @@ export default function Brand() {
                 <div className="logo-box mb-4">
                     <i className="bi bi-graph-up-arrow"></i>
                 </div>
-                <h2 className="fw-bold">Trade Ledger</h2>
+                <h2 className="fw-bold">Trade Memo</h2>
                 <p className="opacity-75 mt-3">
                     Build your trading journal, monitor performance,
                     discover winning strategies and grow consistently.

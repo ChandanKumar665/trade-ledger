@@ -2,6 +2,7 @@ import ErrorPage from './components/404'
 import UnderConstruction from './components/404/UnderConstruction'
 import Privacy from './components/Privacy'
 import Accounts from "./components/accounts/Accounts"
+import Analytics from './components/analytics/Analytics'
 import Calendar from './components/calendar/Calendar'
 import Dashboard from './components/dashboard/Dashboard'
 import Home from "./components/home/Home"
@@ -64,7 +65,7 @@ export const protectedRoutes = [
         key: 'aly',
         path: '/analytics',
         icon: 'bi bi-graph-up',
-        component: <Accounts />
+        component: <Analytics />
     },
     {
         name: 'Reports',

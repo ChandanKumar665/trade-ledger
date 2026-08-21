@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { createUser } from "../../services/auth";
-import Navbar from "../utils/Navbar";
 import Brand from "./Brand";
 import './login.css';
+
 
 export default function Register(props) {
     const { login } = useAuth();
@@ -143,7 +143,7 @@ export default function Register(props) {
                                                 type="submit"
                                                 className="btn btn-primary btn-register w-100"
                                             >
-                                                <i class="bi bi-person-plus-fill me-2"></i>
+                                                <i className="bi bi-person-plus-fill me-2"></i>
                                                 Create Account
                                             </button>
                                         </form>
