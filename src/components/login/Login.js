@@ -64,9 +64,9 @@ export default function Login2() {
             const firebaseToken = await result.user.getIdToken();
             //send fbcode to server
             const res = await authUser({ phone: data.mobile, fbtoken: firebaseToken })
-            if (res?.data?.token) {
+            if (res?.statusCode === 200) {
                 toast[res.type](res.message);
-                login(res.data.token)
+                login()
                 navigate('/dashboard', { replace: true })
             } else {
                 //user not found
