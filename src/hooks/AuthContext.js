@@ -26,13 +26,23 @@ export const AuthProvider = ({ children }) => {
         setSelectedAccId(id)
     }
     const fetchUsersProfile = async () => {
-        const profile = await getProfile()
-        setUser(profile.data)
+        try {
+            const profile = await getProfile()
+            setUser(profile.data)
+        } catch (error) {
+
+        }
+
     }
     const fetchAccounts = async () => {
-        const accounts = await getAccountList();
-        setAccountList(accounts.data || []);
-        setSelectedAccId(accounts.data[0]._id);
+        try {
+            const accounts = await getAccountList();
+            setAccountList(accounts.data || []);
+            setSelectedAccId(accounts.data[0]._id);
+        } catch (error) {
+
+        }
+
     }
     useEffect(() => {
         if (user) {

@@ -1,12 +1,9 @@
-import axios from 'axios';
-import { API_HOST } from '../config';
-const creds = {
-    withCredentials: true
-}
+import api from './api';
+
 export async function getLoggedInUser() {
     try {
-        const HOST = `${API_HOST}/api/v1/auth/me`
-        const res = await axios.get(HOST, creds)
+        const PATH = `/api/v1/auth/me`
+        const res = await api.get(PATH)
         return { ...res.data, type: 'success' }
     } catch (error) {
         const { message, statusCode, } = error.response.data
@@ -16,8 +13,8 @@ export async function getLoggedInUser() {
 export async function authUser(input) {
     try {
         const { phone, fbtoken } = input
-        const HOST = `${API_HOST}/api/v1/auth/login`
-        const res = await axios.post(HOST, { phone, fbtoken }, creds)
+        const PATH = `/api/v1/auth/login`
+        const res = await api.post(PATH, { phone, fbtoken })
         return { ...res.data, type: 'success' }
     } catch (error) {
         const { message, statusCode, } = error.response.data
@@ -26,8 +23,8 @@ export async function authUser(input) {
 }
 export async function logoutUser() {
     try {
-        const HOST = `${API_HOST}/api/v1/auth/logout`
-        const res = await axios.post(HOST, {}, creds)
+        const PATH = `/api/v1/auth/logout`
+        const res = await api.post(PATH, {})
         return { ...res.data, type: 'success' }
     } catch (error) {
         const { message, statusCode, } = error.response.data
@@ -37,8 +34,8 @@ export async function logoutUser() {
 export async function createUser(input) {
     try {
         const { phone, name, email, trading_exp } = input
-        const HOST = `${API_HOST}/api/v1/auth/signup`
-        const res = await axios.post(HOST, { phone, name, email, trading_exp }, creds)
+        const PATH = `/api/v1/auth/signup`
+        const res = await api.post(PATH, { phone, name, email, trading_exp })
         return { ...res.data, type: 'success' }
     } catch (error) {
         const { message, statusCode } = error.response.data
