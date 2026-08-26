@@ -51,9 +51,7 @@ export default function Login2() {
             if (!data.otp) {
                 return toast['error']('Please enter OTP');
             }
-            // if (process.env.REACT_APP_ENV === 'dev') {
-            //     return devLogin()
-            // }
+
             setIsLoading(true);
             setBtnText('Submitting...')
 
@@ -64,7 +62,6 @@ export default function Login2() {
             const firebaseToken = await result.user.getIdToken();
             //send fbcode to server
             const res = await authUser({ phone: data.mobile, fbtoken: firebaseToken });
-            console.log('res-->', res)
             if (res?.statusCode === 200) {
                 toast[res.type](res.message);
                 login();
@@ -94,9 +91,6 @@ export default function Login2() {
             }
             setIsLoading(true);
             setBtnText('Sending OTP...');
-            // if (process.env.REACT_APP_ENV === 'production') {
-            //     await sendMobileOTP(`${COUNTRY_CODE}${data.mobile}`)
-            // }
             await sendMobileOTP(`${COUNTRY_CODE}${data.mobile}`);
             setIsOtpSend(true);
             toast['success']('OTP Sent');
