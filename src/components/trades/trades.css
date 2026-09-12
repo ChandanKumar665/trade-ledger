@@ -1,0 +1,19 @@
+ .trade-table-card {
+     background: #fff;
+     border: 1px solid #e5e7eb;
+     overflow: hidden;
+ }
+
+ .trade-table th {
+     font-size: 12px;
+     color: #64748b;
+     font-weight: 600;
+     background: #f8fafc;
+     white-space: nowrap;
+ }
+
+ .trade-table td {
+     font-size: 14px;
+     vertical-align: middle;
+     white-space: nowrap;
+ }

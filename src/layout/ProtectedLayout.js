@@ -1,19 +1,39 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/utils/Navbar";
-import SideNav from "../components/utils/SideNav";
 import Footer from "../components/utils/Footer";
+import NavbarHB from "../components/utils/NavbarHB";
+import SideNav from "../components/utils/SideNav";
 
 export default function ProtectedLayout() {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setSidebarOpen((prev) => !prev);
+    };
+
+    const closeSidebar = () => {
+        setSidebarOpen(false);
+    };
     return (
         <>
-            <Navbar />
-            <div className="row p-2">
-                <div className="col-lg-2 p-2">
-                    <SideNav />
-                </div>
-                <main className="col-lg-10 p-2">
+            <div className="dashboard-layout">
+                <NavbarHB
+                    sidebarOpen={sidebarOpen}
+                    toggleSidebar={toggleSidebar}
+                />
+                <SideNav
+                    sidebarOpen={sidebarOpen}
+                    closeSidebar={closeSidebar}
+                />
+                {/* Mobile / Tablet Overlay */}
+                <div
+                    className={`sidebar-overlay ${sidebarOpen ? "show" : ""}`}
+                    onClick={closeSidebar}
+                />
+                <main className="main-content mb-3">
                     <Outlet />
                 </main>
+                <Footer />
             </div>
         </>
     )

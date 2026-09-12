@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { getTradeStats } from "../../services/trade";
-import { formattedCurrency, getDataStatistics, getDaysInMonth, getMonthListForTheCurrentYear } from "../utils/utils";
+import { getDataStatistics, getDaysInMonth, getMonthListForTheCurrentYear } from "../utils/utils";
+import "./calendar.css";
 import PnlDayCard from "./PnlCard";
-import "./style.css";
 import TradeSummary from "./TradeSummary";
 
 export default function Calendar() {
@@ -65,70 +65,71 @@ export default function Calendar() {
     return (
         <>
             <main class="">
-                {/* <!-- Header --> */}
-                <div class="page-header">
-                    <div>
-                        <h2>
-                            Calendar P&L
-                        </h2>
-                        <p>
-                            Daily Trading Performance
-                        </p>
-                    </div>
-                    <div className="header-actions">
-                        <i className="bi bi-calendar" />
-                        <select
-                            className="form-select"
-                            value={selectedMonth.value}
-                            onChange={handleMonthChange}
-                        >
-                            {months.map((month) => (
-                                <option
-                                    key={month.value}
-                                    value={month.value}
+                <div className="section-header justify-content-between align-items-center mb-3">
+                    <div className="row g-3">
+                        <div className="col-md-6 col-lg-6">
+                            <h4 className="mb-1 fw-bold">Calendar P&L</h4>
+                            <small className="text-muted">
+                                Daily Trading Performance
+                            </small>
+                        </div>
+                        <div className="col-md-6 col-lg-6">
+                            <div className="header-actions">
+                                <i className="bi bi-calendar3" />
+                                <select
+                                    className="form-select"
+                                    value={selectedMonth.value}
+                                    onChange={handleMonthChange}
                                 >
-                                    {month.label}
-                                </option>
-                            ))}
-                        </select>
+                                    {months.map((month) => (
+                                        <option
+                                            key={month.value}
+                                            value={month.value}
+                                        >
+                                            {month.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 {/* <!-- KPI Cards --> */}
 
-                <div class="row g-4">
-                    <div class="col-lg-2 col-md-4">
-                        <div className="summary-card">
+                <div className="row g-3 mb-3">
+                    <div className="col-12 col-sm-6 col-lg-3">
+                        <div className="dashboard-card">
                             <small>Net P&L</small>
                             <h3 className={stats?.cls}>{(stats?.totalPnl || 0)}</h3>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4">
-                        <div class="summary-card">
+                    <div className="col-12 col-sm-6 col-lg-3">
+                        <div className="dashboard-card">
                             <small>Winning Days</small>
                             <h3>{stats?.win || 0}</h3>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4">
-                        <div class="summary-card">
+                    <div className="col-12 col-sm-6 col-lg-3">
+                        <div className="dashboard-card">
                             <small>Losing Days</small>
                             <h3>{stats?.lose || 0}</h3>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4">
-                        <div class="summary-card">
+                    <div className="col-12 col-sm-6 col-lg-3">
+                        <div className="dashboard-card">
                             <small>Win Rate</small>
                             <h3>{stats?.winRate || 0}</h3>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4">
-                        <div class="summary-card">
+                    <div className="col-12 col-sm-6 col-lg-3">
+                        <div className="dashboard-card">
                             <small>Avg RR</small>
                             <h3>{stats?.riskReward || 0}</h3>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4">
-                        <div class="summary-card">
+                    <div className="col-12 col-sm-6 col-lg-3">
+                        <div className="dashboard-card">
                             <small>Profit Factor</small>
                             <h3>{stats?.profitFactor || 0}</h3>
                         </div>
@@ -137,21 +138,21 @@ export default function Calendar() {
 
                 {/* <!-- Calendar --> */}
 
-                <div class="row mt-4">
-                    <div class="col-lg-9">
-                        <div class="card custom-card">
-                            <div class="calendar-header">
-                                <button class="btn btn-light" disabled>
-                                    <i class="bi bi-chevron-left"></i>
+                <div className="row g-3 mb-3">
+                    <div className="col-lg-12">
+                        <div className="dashboard-card">
+                            <div className="calendar-header">
+                                <button className="btn btn-light" disabled>
+                                    <i className="bi bi-chevron-left"></i>
                                 </button>
                                 <h4>
                                     {selectedMonth?.label}
                                 </h4>
-                                <button class="btn btn-light" disabled>
-                                    <i class="bi bi-chevron-right"></i>
+                                <button className="btn btn-light" disabled>
+                                    <i className="bi bi-chevron-right"></i>
                                 </button>
                             </div>
-                            <div id="calendar" class="calendar-grid">
+                            <div id="calendar" className="calendar-grid">
                                 {
                                     weekDays.map(day => <div className="day-name"><strong>{day}</strong></div>)
                                 }
@@ -174,14 +175,17 @@ export default function Calendar() {
                             </div>
                         </div>
                     </div>
-
-                    {
-                        slectedCalendarDayProps && <div class="col-lg-3">
-                            <TradeSummary slectedCalendarDayProps={slectedCalendarDayProps} />
-                        </div>
-                    }
-
                 </div>
+                {
+                    slectedCalendarDayProps && (
+                        <div className="row g-3">
+                            <div className="col-lg-12">
+                                <TradeSummary slectedCalendarDayProps={slectedCalendarDayProps} />
+                            </div>
+                        </div>
+
+                    )
+                }
 
                 {/* <!-- Chart --> */}
 

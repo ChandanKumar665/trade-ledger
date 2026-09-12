@@ -1,5 +1,6 @@
-import { formatPnl, formattedCurrency } from "../utils/utils";
-import './style.css';
+import useDeviceType from "../../hooks/useDeviceType";
+import { formatPnl, formattedCurrency, } from "../utils/utils";
+import './calendar.css';
 
 export default function PnlDayCard(props) {
     const { tradesData, day, slectedCalendarDayProps, setSlectedCalendarDayProps, selectedMonth } = props
@@ -9,6 +10,7 @@ export default function PnlDayCard(props) {
     const pnl = currentTradeDayList.reduce((acc, curr, index) => acc += curr.pnl, 0);
     const { cls, sign, bg } = formatPnl(pnl)
     const ammount = `${sign}${formattedCurrency(pnl, curr || 'inr')}`;
+    const [deviceType, isMobileView] = useDeviceType();
     return (
         <div
             className={`calendar-day ${bg} ${currentDay === slectedCalendarDayProps?.selectedDay ? 'selected' : ''}`}
@@ -24,16 +26,21 @@ export default function PnlDayCard(props) {
                 }))
             }}
         >
-            <div class="date">{day}</div>
-            <div class="amount">
-                {pnl === 0
-                    ? "No Trade"
-                    : `${ammount}`
-                }
-            </div>
-            <small>
-                {currentTradeDayList.length ? `${currentTradeDayList.length} Trades` : ''}
-            </small>
+            <div className="date">{day}</div>
+            {
+                !isMobileView && (
+                    <>
+                        <div class="amount">
+                            {pnl === 0
+                                ? "No Trade"
+                                : `${ammount}`
+                            }
+                        </div>
+                        <small>
+                            {currentTradeDayList.length ? `${currentTradeDayList.length} Trades` : ''}
+                        </small> </>
+                )
+            }
         </div>
     )
 }
