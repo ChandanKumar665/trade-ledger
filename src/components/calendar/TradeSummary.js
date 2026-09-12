@@ -1,25 +1,32 @@
 import { formatDate2, formatPnl, formattedCurrency } from "../utils/utils"
-import './style.css'
+import './calendar.css'
+
 const TradeListSummaryCard = (props) => {
     const { pnl, symbol, entry_price, exit_price, qty, order_type, curr } = props
     const { cls, sign } = formatPnl(pnl)
 
     return (
-        <div class="trade-item">
-            <div class="d-flex justify-content-between">
-                <strong>{symbol.toUpperCase()}</strong>
-                <span>{order_type?.toUpperCase()}</span>
-                <span class={cls}>
+        <div className="dashboard-card">
+            <div className="row">
+
+                <strong className="col-md-4 col-sm-4">{symbol.toUpperCase()}</strong>
+                <span className="col-md-4 col-sm-4">{order_type?.toUpperCase()}</span>
+                <span className={`col-md-4 col-sm-4 ${cls}`}>
                     {`${sign}${formattedCurrency(pnl, curr || 'inr')}`}
                 </span>
             </div>
-            <div class="text-muted">
-                Entry {entry_price}
-                •
-                Exit {exit_price}
+            <hr></hr>
+            <div>
+                <span className="text-muted">Entry:</span>
+                <small className="text-muted fw-bold" >{entry_price}</small>
             </div>
-            <div class="text-muted">
-                Qty {qty}
+            <div>
+                <span className="text-muted">Exit:</span>
+                <small className="text-muted fw-bold">{exit_price}</small>
+            </div>
+            <div>
+                <span className="text-muted">Qty:</span>
+                <small className="text-muted fw-bold">{qty}</small>
             </div>
         </div>
     )
@@ -28,19 +35,19 @@ const TradeListSummaryCard = (props) => {
 export default function TradeSummary(props) {
     const { slectedCalendarDayProps } = props
     const { cls } = formatPnl(slectedCalendarDayProps?.pnl)
+    const selectedDate = slectedCalendarDayProps?.selectedDay && formatDate2(slectedCalendarDayProps?.selectedDay, 'ddd, Do MMMM YYYY').date
+    const totalTrades = slectedCalendarDayProps?.currentTradeDayList?.length || 0
     return (
-        <div class="card custom-card h-100">
-            <h5>
-                {slectedCalendarDayProps?.selectedDay && formatDate2(slectedCalendarDayProps?.selectedDay, 'ddd, Do MMMM YYYY').date}
-            </h5>
-            <h2 className={cls}>
+        <div class="dashboard-card h-100">
+            <small className="text-muted">
+                {selectedDate}
+            </small>
+            <h3 className={cls}>
                 {slectedCalendarDayProps?.totatPnl}
-            </h2>
+            </h3>
             <hr />
-            <div className="stats">
-                <div>
-                    <span className="text-muted">{slectedCalendarDayProps?.currentTradeDayList?.length || 0} Trades</span>
-                </div>
+            <div className="">
+                <span className="text-muted">Total <strong>{totalTrades}</strong> Trades</span>
             </div>
             <hr />
             <h6>

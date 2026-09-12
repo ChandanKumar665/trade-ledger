@@ -4,11 +4,10 @@ import { useAuth } from "../../hooks/useAuth";
 import { getTradeList } from '../../services/trade';
 import Actions from "../utils/Actions";
 import Filter from "../utils/Filter";
-import Navbar from "../utils/Navbar";
 import { formatDate, formattedCurrency } from "../utils/utils";
 import AddUpdateTrade from "./AddUpdateTrade";
 import DeleteTrade from "./DeleteTrade";
-import SideNav from "../utils/SideNav";
+import "./trades.css";
 
 export default function Trades() {
     const { user, selectedAccId } = useAuth();
@@ -47,86 +46,96 @@ export default function Trades() {
 
     return (
         <>
-            <Filter {...{ filterData, setFilterData }} />
-            <div className="mb-2">
-                <AddUpdateTrade {...{ ...editOps, setEditOps, setSync }} />
+            <div class="section-header justify-content-between align-items-center mb-3">
+                <h4 class="mb-1 fw-bold">Trades</h4>
+                <small class="text-muted">
+                    All trades at one place
+                </small>
             </div>
-            <div>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            {
-                                thead.map((item, i) => <th key={i} scope="col">{item.name}</th>)
-                            }
+            <Filter {...{ filterData, setFilterData }} />
+            <div className="trade-table-card">
+                <div className="p-3 border-bottom">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <AddUpdateTrade {...{ ...editOps, setEditOps, setSync }} />
+                    </div>
+                </div>
+                <div className="table-responsive">
+                    <table className="table table-hover mb-0 trade-table">
+                        <thead>
+                            <tr>
+                                {
+                                    thead.map((item, i) => <th key={i} scope="col">{item.name}</th>)
+                                }
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            data.map((item, i) => {
-                                const removeProps = {
-                                    handler: delTrade,
-                                    modal_id: 'del_trade',
-                                    params: { id: item._id, account_id: item.account_id, name: `${item.symbol}-${item.order_type}` }
-                                }
-                                const editProps = {
-                                    handler: editTrade,
-                                    modal_id: 'add_up_trade',
-                                    params: {
-                                        ...item,
-                                        id: item._id,
-                                        edit: true
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                data.map((item, i) => {
+                                    const removeProps = {
+                                        handler: delTrade,
+                                        modal_id: 'del_trade',
+                                        params: { id: item._id, account_id: item.account_id, name: `${item.symbol}-${item.order_type}` }
                                     }
-                                }
-                                const viewProps = {
-                                    handler: editTrade,
-                                    modal_id: 'add_up_trade',
-                                    params: {
-                                        ...item,
-                                        id: item._id,
-                                        view: true
+                                    const editProps = {
+                                        handler: editTrade,
+                                        modal_id: 'add_up_trade',
+                                        params: {
+                                            ...item,
+                                            id: item._id,
+                                            edit: true
+                                        }
                                     }
+                                    const viewProps = {
+                                        handler: editTrade,
+                                        modal_id: 'add_up_trade',
+                                        params: {
+                                            ...item,
+                                            id: item._id,
+                                            view: true
+                                        }
+                                    }
+                                    const curr = item.curr[0].curr
+                                    const open = formatDate(item.open_time)
+                                    const close = formatDate(item.close_time)
+                                    let cls, sign = '';
+                                    if (item.pnl > 0) {
+                                        cls = 'text-success'
+                                        sign = '+'
+                                    } else {
+                                        cls = 'text-danger'
+                                    }
+                                    const ammount = `${sign}${formattedCurrency(item.pnl, curr)}`;
+                                    return (
+                                        <tr key={i}>
+                                            <td>{item.symbol}</td>
+                                            <td>{item.order_type}</td>
+                                            <td>
+                                                <span>{open.date}</span><br></br>
+                                                <span>{open.time}</span>
+                                            </td>
+                                            <td>
+                                                <span>{close.date}</span><br></br>
+                                                <span>{close.time}</span>
+                                            </td>
+                                            <td>{item.entry_price}</td>
+                                            <td>{item.exit_price}</td>
+                                            <td className={`${cls} fw-bold`}>{ammount}</td>
+                                            <td>
+                                                <Actions
+                                                    view={viewProps}
+                                                    edit={editProps}
+                                                    remove={removeProps}
+                                                />
+                                            </td>
+                                        </tr>
+                                    )
                                 }
-                                const curr = item.curr[0].curr
-                                const open = formatDate(item.open_time)
-                                const close = formatDate(item.close_time)
-                                let cls, sign = '';
-                                if (item.pnl > 0) {
-                                    cls = 'text-success'
-                                    sign = '+'
-                                } else {
-                                    cls = 'text-danger'
-                                }
-                                const ammount = `${sign}${formattedCurrency(item.pnl, curr)}`;
-                                return (
-                                    <tr key={i}>
-                                        <td>{item.symbol}</td>
-                                        <td>{item.order_type}</td>
-                                        <td>
-                                            <span>{open.date}</span><br></br>
-                                            <span>{open.time}</span>
-                                        </td>
-                                        <td>
-                                            <span>{close.date}</span><br></br>
-                                            <span>{close.time}</span>
-                                        </td>
-                                        <td>{item.entry_price}</td>
-                                        <td>{item.exit_price}</td>
-                                        <td className={`${cls} fw-bold`}>{ammount}</td>
-                                        <td>
-                                            <Actions
-                                                view={viewProps}
-                                                edit={editProps}
-                                                remove={removeProps}
-                                            />
-                                        </td>
-                                    </tr>
                                 )
                             }
-                            )
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
                 <ToastContainer autoClose={1000} />
                 <DeleteTrade {...{ ...deleteOps, setSync }} />
             </div>

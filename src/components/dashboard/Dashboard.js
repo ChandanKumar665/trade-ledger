@@ -96,51 +96,72 @@ export default function Dashboard(props) {
                     No account selected. Go to to accounts page and create one.
                 </div>) :
                 <>
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2>Dashboard</h2>
+                    <div class="section-header justify-content-between align-items-center mb-3">
+                        <h4 class="mb-1 fw-bold">Dashboard</h4>
+                        <small class="text-muted">
+                            Overview of your trading performance
+                        </small>
                     </div>
-                    <Filter {...{ filterData, setFilterData }} />
-                    <div className="row g-3">
-                        <div className="col-md-3">
-                            <div className="card p-3">
-                                <div>Total P&L</div>
-                                <div className="stat text-success">{formattedCurrency(statData?.currentBal, selectedAccount?.curr || 'inr')}</div>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="card p-3">
-                                <div>Win Rate</div>
-                                <div className="stat text-primary">{statData?.winRate}</div>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="card p-3">
-                                <div>Risk/Reward</div>
-                                <div className="stat">{statData?.riskReward}</div>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="card p-3">
-                                <div>Total Trades</div>
-                                <div className="stat">{statData?.totalTrades}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row g-4 mt-2">
-                        <div className="col-lg-8">
-                            <div className="card p-3">
-                                <h5>Equity Curve</h5>
-                                <div style={{ height: "350px" }}>
-                                    <Line data={chartData} options={options} />
+                    <div className="">
+                        <Filter {...{ filterData, setFilterData }} />
+                        <div className="row g-3 mb-3">
+                            <div className="col-12 col-sm-6 col-lg-3">
+                                <div className="dashboard-card">
+                                    <small className="text-muted">
+                                        Total P&L
+                                    </small>
+                                    <h3 className="text-success mt-2">
+                                        {formattedCurrency(statData?.currentBal, selectedAccount?.curr || 'inr')}
+                                    </h3>
                                 </div>
-
+                            </div>
+                            <div className="col-12 col-sm-6 col-lg-3">
+                                <div className="dashboard-card">
+                                    <small className="text-muted">
+                                        Win Rate
+                                    </small>
+                                    <h3 className="text-primary mt-2">
+                                        {statData?.winRate}
+                                    </h3>
+                                </div>
+                            </div>
+                            <div className="col-12 col-sm-6 col-lg-3">
+                                <div className="dashboard-card">
+                                    <small className="text-muted">
+                                        Risk/Reward
+                                    </small>
+                                    <h3 className="mt-2">
+                                        {statData?.riskReward}
+                                    </h3>
+                                </div>
+                            </div>
+                            <div className="col-12 col-sm-6 col-lg-3">
+                                <div className="dashboard-card">
+                                    <small className="text-muted">
+                                        Total Trades
+                                    </small>
+                                    <h3 className="mt-2">
+                                        {statData?.totalTrades}
+                                    </h3>
+                                </div>
                             </div>
                         </div>
-                        <div className="col-lg-4">
-                            <div className="card p-3">
-                                <h5>Win vs Loss</h5>
-                                <div style={{ height: "350px" }}>
-                                    <Doughnut data={donutData} />
+                        <div className="row g-3">
+                            <div className="col-lg-8">
+                                <div className="dashboard-card">
+                                    <h6 className="fw-bold mb-1">Equity Curve</h6>
+                                    <div style={{ height: "350px" }}>
+                                        <Line data={chartData} options={options} />
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div className="col-lg-4">
+                                <div className="dashboard-card">
+                                    <h6 className="fw-bold mb-1">Win vs Loss</h6>
+                                    <div style={{ height: "350px" }}>
+                                        <Doughnut data={donutData} />
+                                    </div>
                                 </div>
                             </div>
                         </div>

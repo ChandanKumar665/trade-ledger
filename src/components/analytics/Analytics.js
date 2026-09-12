@@ -2,10 +2,15 @@
 export default function Analytics() {
     return (
         <>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Analytics</h2>
+            <div class="section-header justify-content-between align-items-center mb-3">
+                <h4 class="mb-1 fw-bold">Analytics</h4>
+                <small class="text-muted">
+                    Overview of your trading performance
+                </small>
             </div>
-            <p>Comming Soon...</p>
+            <main class="">
+                Coming Soon...
+            </main>
         </>
     )
 }

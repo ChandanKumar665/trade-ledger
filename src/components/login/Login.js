@@ -115,7 +115,7 @@ export default function Login2() {
             <div className="py-4">
                 <div className="row justify-content-center align-items-center min-vh-50">
                     <div className="col-lg-9">
-                        <div className="card shadow-lg login-card">
+                        <div className=" shadow-lg login-card">
                             <div className="row g-0">
                                 {/* <!-- Left Side --> */}
                                 <Brand />

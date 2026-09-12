@@ -6,7 +6,9 @@
     --card: #fff;
     --text: #1f2937;
     --muted: #6b7280;
-    --border: #e5e7eb
+    --border: #e5e7eb;
+    --cal-profit: #04b488;
+    --cal-loss: #ed5533;
 }
 
 * {
@@ -66,14 +68,13 @@ body {
 
 .header-actions {
     display: flex;
-    gap: 12px
+    gap: 12px;
 }
 
 .summary-card,
 .custom-card {
     background: #fff;
     border: 1px solid var(--border);
-    border-radius: 18px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, .05)
 }
 
@@ -87,10 +88,6 @@ body {
 
 .loss-text {
     color: var(--danger)
-}
-
-.custom-card {
-    padding: 20px
 }
 
 .calendar-header {
@@ -107,10 +104,9 @@ body {
 }
 
 .calendar-day {
-    min-height: 110px;
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 10px;
+    border-radius: 4px;
+    padding: 8px;
     display: flex;
     cursor: pointer;
     flex-direction: column;
@@ -119,12 +115,10 @@ body {
 
 .calendar-day.profit {
     background: #ecfdf5;
-    /* border-left: 5px solid var(--success) */
 }
 
 .calendar-day.loss {
     background: #fef2f2;
-    /* border-left: 5px solid var(--danger) */
 }
 
 .calendar-day.neutral {
@@ -139,49 +133,68 @@ body {
 .trade-item {
     padding: 10px;
     border: 1px solid var(--border);
-    border-radius: 10px;
     margin-bottom: 10px
 }
 
-@media(max-width:992px) {
-    .sidebar {
-        display: none
-    }
+.day-name {
+    text-align: center;
+}
 
+/* desktop */
+@media(max-width:992px) {
     .content {
         padding: 18px
     }
 
     .calendar-grid {
-        grid-template-columns: repeat(2, 1fr)
+        gap: 8px;
     }
 }
 
+/* Mob / Tab */
 @media(max-width:576px) {
     .page-header {
         flex-direction: column;
         align-items: flex-start
     }
 
-    .header-actions {
-        width: 100%;
-        flex-direction: column
+    .calendar-day {
+        text-align: center;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        cursor: pointer;
+        padding: 0;
     }
 
-    .calendar-grid {
-        grid-template-columns: 1fr
+    .date {
+        /* font-size: small */
     }
+
+    .calendar-day.profit {
+        background-color: var(--success);
+    }
+
+    .calendar-day.loss {
+        background-color: var(--danger);
+    }
+
+    .amount {
+        font-size: 4px;
+        font-weight: 400;
+    }
+
+    .header-actions {}
 }
 
 .calendar-day.selected {
-    border: 2px solid #2563eb;
+    border: 1px solid #2563eb;
     transform: scale(1.04);
     box-shadow: 0 10px 25px rgba(87, 136, 240, 0.25);
 }
 
 .amount {
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 800;
     margin-top: 8px;
     margin-bottom: 6px;
     line-height: 1.3;

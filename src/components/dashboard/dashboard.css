@@ -1,9 +1,15 @@
 .card {
     border: none;
-    border-radius: 18px
 }
 
 .stat {
     font-size: 2rem;
     font-weight: 700
+}
+
+.dashboard-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    height: 100%;
 }

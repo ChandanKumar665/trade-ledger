@@ -27,6 +27,10 @@ export function getInitials(name) {
         .join('')
         .toUpperCase();
 }
+export function getFirstName(name) {
+    return name?.trim()
+        .split(' ')[0]
+}
 
 export function getMonthListForTheCurrentYear(count = 12) {
     const months = [];
