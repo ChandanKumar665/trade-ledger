@@ -1,16 +1,9 @@
-.profile-banner {
-    height: 200px;
-    background: linear-gradient(135deg, #a6c1eb, #6f42c1);
-    border-radius: 0 0 35px 35px;
-}
-
 .profile-card {
     border: none;
 }
 
 .profile-img {
     width: 120px;
-    /* height: 130px; */
     object-fit: cover;
     border-radius: 50%;
     border: 6px solid #fff;
