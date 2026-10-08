@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         setSelectedAccId(null);
         setAccountList([]);
     }
-    const login = async (token) => {
+    const login = async () => {
         setUser(true);
         setSyncUser(prev => !prev)
         setSyncAccList(prev => !prev);
