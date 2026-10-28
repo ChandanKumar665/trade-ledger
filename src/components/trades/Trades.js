@@ -75,7 +75,7 @@ export default function Trades() {
                                     const removeProps = {
                                         handler: delTrade,
                                         modal_id: 'del_trade',
-                                        params: { id: item._id, account_id: item.account_id, name: `${item.symbol}-${item.order_type}` }
+                                        params: { id: item._id, account_id: item.account_id._id, name: `${item.symbol}-${item.order_type}` }
                                     }
                                     const editProps = {
                                         handler: editTrade,
@@ -95,7 +95,7 @@ export default function Trades() {
                                             view: true
                                         }
                                     }
-                                    const curr = item.curr[0].curr
+                                    const curr = item.account_id.curr
                                     const open = formatDate(item.open_time)
                                     const close = formatDate(item.close_time)
                                     let cls, sign = '';

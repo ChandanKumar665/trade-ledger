@@ -7,9 +7,9 @@ export default function PnlDayCard(props) {
     const currentDay = `${selectedMonth.value}-${String(props.day).padStart(2, "0")}`;
     const currentTradeDayList = tradesData?.filter(trade => trade.open_time.includes(currentDay));
     const curr = currentTradeDayList[0]?.curr
-    const pnl = currentTradeDayList.reduce((acc, curr, index) => acc += curr.pnl, 0);
+    const pnl = currentTradeDayList.reduce((acc, curr) => acc += (curr.pnl - (curr?.fees?.tradingFees || 0)), 0);
     const { cls, sign, bg } = formatPnl(pnl)
-    const ammount = `${sign}${formattedCurrency(pnl, curr || 'inr')}`;
+    const ammount = `${formattedCurrency(pnl, curr || 'inr')}`;
     const [deviceType, isMobileView] = useDeviceType();
     return (
         <div
@@ -19,7 +19,8 @@ export default function PnlDayCard(props) {
             onClick={(e) => {
                 setSlectedCalendarDayProps(prev =>
                 ({
-                    ...prev, selectedDay: currentDay,
+                    ...prev,
+                    selectedDay: currentDay,
                     currentTradeDayList,
                     pnl,
                     totatPnl: ammount
@@ -30,7 +31,7 @@ export default function PnlDayCard(props) {
             {
                 !isMobileView && (
                     <>
-                        <div class="amount">
+                        <div className="amount">
                             {pnl === 0
                                 ? "No Trade"
                                 : `${ammount}`

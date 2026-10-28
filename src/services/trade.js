@@ -2,12 +2,13 @@ import api from './api';
 
 export async function getTradeList(input) {
     try {
-        const { user_id, account_id, filter } = input
+        const { account_id, filter } = input
         const PATH = `/api/v1/trade/list`
         const res = await api.post(PATH, { account_id, filter })
         return { ...res.data, type: 'success' }
     } catch (error) {
-        return { message: error.message, statusCode: error.status, type: 'error' }
+        const { message, statusCode, } = error.response.data
+        return { message, statusCode, type: 'error' }
     }
 }
 
@@ -17,7 +18,19 @@ export async function create(input) {
         const res = await api.post(PATH, input)
         return { ...res.data, type: 'success' }
     } catch (error) {
-        return { message: error.message, statusCode: error.status, type: 'error' }
+        const { message, statusCode, } = error.response.data
+        return { message, statusCode, type: 'error' }
+    }
+}
+
+export async function createMany(input) {
+    try {
+        const PATH = `/api/v1/trade/csv_save`
+        const res = await api.post(PATH, input)
+        return { ...res.data, type: 'success' }
+    } catch (error) {
+        const { message, statusCode, } = error.response.data
+        return { message, statusCode, type: 'error' }
     }
 }
 export async function remove(input) {
@@ -29,7 +42,8 @@ export async function remove(input) {
         });
         return { ...res.data, type: 'success' }
     } catch (error) {
-        return { message: error.message, statusCode: error.status, type: 'error' }
+        const { message, statusCode, } = error.response.data
+        return { message, statusCode, type: 'error' }
     }
 }
 export async function update(input) {
@@ -43,7 +57,8 @@ export async function update(input) {
         })
         return { ...res.data, type: 'success' }
     } catch (error) {
-        return { message: error.message, statusCode: error.status, type: 'error' }
+        const { message, statusCode, } = error.response.data
+        return { message, statusCode, type: 'error' }
     }
 }
 
@@ -56,6 +71,21 @@ export async function getTradeStats(input) {
         })
         return { ...res.data, type: 'success' }
     } catch (error) {
-        return { message: error.message, statusCode: error.status, type: 'error' }
+        const { message, statusCode, } = error.response.data
+        return { message, statusCode, type: 'error' }
+    }
+}
+
+export async function getCalendarTradeStats(input) {
+    try {
+        const { account_id, filter } = input
+        const PATH = `/api/v1/trade/stats/cal`
+        const res = await api.post(PATH, {
+            account_id, filter
+        })
+        return { ...res.data, type: 'success' }
+    } catch (error) {
+        const { message, statusCode, } = error.response.data
+        return { message, statusCode, type: 'error' }
     }
 }

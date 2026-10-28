@@ -7,7 +7,8 @@ export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
-    const [selectedAccId, setSelectedAccId] = useState()
+    const [selectedAccId, setSelectedAccId] = useState();
+    const [selectedAccount, setSelectedAccount] = useState();
     const [accountList, setAccountList] = useState([]);
     const [syncAccList, setSyncAccList] = useState(false);
     const [syncUser, setSyncUser] = useState(false);
@@ -44,6 +45,14 @@ export const AuthProvider = ({ children }) => {
         }
 
     }
+
+    useEffect(() => {
+        if (user) {
+            const found = accountList.find(account => account._id === selectedAccId)
+            setSelectedAccount(found)
+        }
+    }, [selectedAccId]);
+
     useEffect(() => {
         if (user) {
             fetchAccounts()
@@ -76,6 +85,7 @@ export const AuthProvider = ({ children }) => {
                 logout,
                 updateSelectedAccount,
                 selectedAccId,
+                selectedAccount,
                 accountList,
                 setSyncAccList,
                 setSyncUser

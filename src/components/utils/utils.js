@@ -5,7 +5,7 @@ export function formattedCurrency(amount, curr) {
         style: 'currency',
         currency: curr
     }).format(amount);
-    return value > 0 ? `+${value}` : value;
+    return value > 0 ? `${value}` : value;
 }
 
 export function captialize(input) {
@@ -60,7 +60,7 @@ export function getDaysInMonth(value) {
         totalDays: new Date(year, month, 0).getDate()
     }
 }
-export function getDataStatistics(data = []) {
+export function getDataStatistics(data = [], curr) {
     if (!data.length) {
         return ''
     }
@@ -69,11 +69,10 @@ export function getDataStatistics(data = []) {
     let totalPnl = 0;
     let totalLosingPnl = 0;
     const total = data?.length || 0
-    const curr = data[0].curr
     let currentBal = 0;
     data?.map((item, i) => {
         const days = formatDate2(item.open_time).date
-        totalPnl += item.pnl
+        totalPnl += item.pnl - (item.fees?.tradingFees || 0)
         if (item.pnl > 0) {
             win += 1
             totalWinPnl += (item.pnl)
@@ -83,7 +82,7 @@ export function getDataStatistics(data = []) {
     })
     return {
         win,
-        totalPnl: formattedCurrency(totalPnl, curr),
+        totalPnl,
         lose: total - win,
         totalWinPnl,
         totalLosingPnl,
@@ -107,4 +106,7 @@ export function formatPnl(pnl) {
         bg = 'neutral'
     }
     return { cls, sign, bg };
+}
+export function toNumber(value) {
+    return Number(String(value ?? 0).replace(/,/g, "")) || 0;
 }
