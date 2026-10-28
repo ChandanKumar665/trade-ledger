@@ -6,10 +6,10 @@ import { getTradeStats } from "../../services/trade";
 import Filter from "../utils/Filter";
 import { formatDate2, formattedCurrency } from "../utils/utils";
 import "./dashboard.css";
+import MetricCard from "../utils/MetricCard";
 
 export default function Dashboard(props) {
-    const { user, logout, selectedAccId, accountList } = useAuth();
-    const [selectedAccount, setSelectedAccount] = useState();
+    const { user, logout, selectedAccId, accountList, selectedAccount } = useAuth();
     const [statData, setStatData] = useState()
     const [chartData, setChartData] = useState({
         labels: [],
@@ -33,7 +33,7 @@ export default function Dashboard(props) {
             },
         ],
     })
-    const [currentBal, setCurrentBal] = useState();
+    const [isInitialBalIncluded, setIsInitialBalIncluded] = useState(false);
     const [filterData, setFilterData] = useState();
 
     const options = {
@@ -53,7 +53,7 @@ export default function Dashboard(props) {
         let totalLosingPnl = 0;
         const total = res?.data?.length || 0
         let currentBal = 0;
-        res?.data?.map((item, i) => {
+        total && res?.data?.map((item, i) => {
             const days = formatDate2(item.open_time).date
             if (item.pnl > 0) {
                 win += 1
@@ -80,15 +80,24 @@ export default function Dashboard(props) {
         setChartData(prev => ({ ...prev, labels: labels, datasets: [{ ...prev.datasets[0], data: datasets }] }))
     }
 
-    useEffect(() => {
-        const found = accountList.find(account => account._id === selectedAccId)
-        setSelectedAccount(found)
-    }, [accountList, selectedAccId]);
-
+    const onChangeHandler = (e) => {
+        setIsInitialBalIncluded(prev => e.target.checked)
+    }
     useEffect(() => {
         get();
     }, [selectedAccId, filterData]);
 
+    useEffect(() => {
+        if (isInitialBalIncluded) {
+            setStatData(prev => ({ ...prev, currentBal: prev?.currentBal + selectedAccount?.initial_cap }))
+            setChartData(prev => ({ ...prev, datasets: [{ ...prev.datasets[0], data: [...prev.datasets[0].data].map(item => item + selectedAccount?.initial_cap) }] }))
+        } else {
+            setStatData(prev => ({ ...prev, currentBal: prev?.currentBal - selectedAccount?.initial_cap }))
+            setChartData(prev => ({ ...prev, datasets: [{ ...prev.datasets[0], data: [...prev.datasets[0].data].map(item => item - selectedAccount?.initial_cap) }] }))
+
+        }
+
+    }, [isInitialBalIncluded, selectedAccId]);
     return <>
         {
             accountList.length < 1 ?
@@ -105,45 +114,48 @@ export default function Dashboard(props) {
                     <div className="">
                         <Filter {...{ filterData, setFilterData }} />
                         <div className="row g-3 mb-3">
-                            <div className="col-12 col-sm-6 col-lg-3">
-                                <div className="dashboard-card">
-                                    <small className="text-muted">
-                                        Total P&L
-                                    </small>
-                                    <h3 className="text-success mt-2">
-                                        {formattedCurrency(statData?.currentBal, selectedAccount?.curr || 'inr')}
-                                    </h3>
+                            <div className="col-12 col-sm-12 col-lg-12">
+                                <div class="dashboard-card">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        onChange={onChangeHandler}
+                                    />
+                                    &nbsp;<label class="form-check-label" for="flexCheckChecked">
+                                        <small class="text-muted">
+                                            Include initial Balance  {formattedCurrency(selectedAccount?.initial_cap, selectedAccount?.curr || 'inr')}
+                                        </small>
+                                    </label>
                                 </div>
                             </div>
+
+                        </div>
+                        <div className="row g-3 mb-3">
                             <div className="col-12 col-sm-6 col-lg-3">
-                                <div className="dashboard-card">
-                                    <small className="text-muted">
-                                        Win Rate
-                                    </small>
-                                    <h3 className="text-primary mt-2">
-                                        {statData?.winRate}
-                                    </h3>
-                                </div>
+                                <MetricCard
+                                    label="Gross P&L"
+                                    value={statData?.currentBal || 0}
+                                    isCurrency={true}
+                                    curr={selectedAccount?.curr}
+                                />
                             </div>
                             <div className="col-12 col-sm-6 col-lg-3">
-                                <div className="dashboard-card">
-                                    <small className="text-muted">
-                                        Risk/Reward
-                                    </small>
-                                    <h3 className="mt-2">
-                                        {statData?.riskReward}
-                                    </h3>
-                                </div>
+                                <MetricCard
+                                    label="Win Rate"
+                                    value={statData?.winRate || 0}
+                                />
                             </div>
                             <div className="col-12 col-sm-6 col-lg-3">
-                                <div className="dashboard-card">
-                                    <small className="text-muted">
-                                        Total Trades
-                                    </small>
-                                    <h3 className="mt-2">
-                                        {statData?.totalTrades}
-                                    </h3>
-                                </div>
+                                <MetricCard
+                                    label="Risk/Reward"
+                                    value={statData?.riskReward || 0}
+                                />
+                            </div>
+                            <div className="col-12 col-sm-6 col-lg-3">
+                                <MetricCard
+                                    label="Total Trades"
+                                    value={statData?.totalTrades || 0}
+                                />
                             </div>
                         </div>
                         <div className="row g-3">
@@ -153,7 +165,6 @@ export default function Dashboard(props) {
                                     <div style={{ height: "350px" }}>
                                         <Line data={chartData} options={options} />
                                     </div>
-
                                 </div>
                             </div>
                             <div className="col-lg-4">

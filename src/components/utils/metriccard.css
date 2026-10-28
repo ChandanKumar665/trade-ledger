@@ -1,0 +1,38 @@
+.analytics-metric,
+.analytics-panel {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+}
+
+.analytics-metric {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    height: 100%;
+}
+
+.analytics-metric-label {
+    color: var(--bs-secondary-color);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.analytics-metric-value {
+    font-size: clamp(21px, 2vw, 28px);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.analytics-metric-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--bs-tertiary-bg);
+    color: var(--bs-primary);
+    font-size: 22px;
+}

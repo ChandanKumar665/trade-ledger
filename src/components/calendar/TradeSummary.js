@@ -2,23 +2,23 @@ import { formatDate2, formatPnl, formattedCurrency } from "../utils/utils"
 import './calendar.css'
 
 const TradeListSummaryCard = (props) => {
-    const { pnl, symbol, entry_price, exit_price, qty, order_type, curr } = props
-    const { cls, sign } = formatPnl(pnl)
+    const { pnl, symbol, entry_price, exit_price, qty, order_type, curr, fees } = props
+    const finalPnl = pnl - (fees?.tradingFees || 0)
+    const { cls, sign } = formatPnl(finalPnl)
 
     return (
-        <div className="dashboard-card">
+        <div className="dashboard-card mb-3">
             <div className="row">
-
                 <strong className="col-md-4 col-sm-4">{symbol.toUpperCase()}</strong>
                 <span className="col-md-4 col-sm-4">{order_type?.toUpperCase()}</span>
                 <span className={`col-md-4 col-sm-4 ${cls}`}>
-                    {`${sign}${formattedCurrency(pnl, curr || 'inr')}`}
+                    {`${formattedCurrency(finalPnl, curr || 'inr')}`}
                 </span>
             </div>
             <hr></hr>
             <div>
                 <span className="text-muted">Entry:</span>
-                <small className="text-muted fw-bold" >{entry_price}</small>
+                <small className="text-muted fw-bold" >{entry_price || '-'}</small>
             </div>
             <div>
                 <span className="text-muted">Exit:</span>
@@ -55,8 +55,8 @@ export default function TradeSummary(props) {
             </h6>
             <div id="tradeList">
                 {
-                    slectedCalendarDayProps?.currentTradeDayList?.map(trade =>
-                        <TradeListSummaryCard key={trade._id} {...trade} />
+                    slectedCalendarDayProps?.currentTradeDayList?.map((trade, index) =>
+                        <TradeListSummaryCard key={trade._id || index} {...trade} />
                     )
                 }
             </div>

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { getTradeStats } from "../../services/trade";
+import { getCalendarTradeStats, getTradeStats } from "../../services/trade";
 import { getDataStatistics, getDaysInMonth, getMonthListForTheCurrentYear } from "../utils/utils";
 import "./calendar.css";
 import PnlDayCard from "./PnlCard";
 import TradeSummary from "./TradeSummary";
+import MetricCard from "../utils/MetricCard";
 
 export default function Calendar() {
-    const { selectedAccId } = useAuth();
+    const { selectedAccId, selectedAccount } = useAuth();
     const months = getMonthListForTheCurrentYear();
     const [selectedMonth, setSelectedMonth] = useState(months[0]);
     const [searchQuery, setSearchQuery] = useState(prepareQuery(months[0].value));
@@ -18,9 +19,6 @@ export default function Calendar() {
     });
     const [stats, setStats] = useState();
     const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-    const calendar = document.getElementById("calendar");
-    const tradeSummaryList = document.getElementById("tradeList");
 
     function prepareQuery(value) {
         if (!value) {
@@ -40,26 +38,17 @@ export default function Calendar() {
     }
     const searchTrades = async () => {
         const payload = { account_id: selectedAccId, filter: searchQuery };
-        const res = await getTradeStats(payload);
+        const res = await getCalendarTradeStats(payload);
         setTradesData(res.data)
     }
 
-    const SummaryCard = (props) => {
-        const { cls, totalPnl, label } = props
-        return (
-            <div className="summary-card">
-                <small>{label}</small>
-                <h3 className={cls}>{(totalPnl || 0)}</h3>
-            </div>
-        )
-    }
     useEffect(() => {
         setSlectedCalendarDayProps({ selectedDay: '' });
         searchTrades();
     }, [searchQuery, selectedAccId]);
 
     useEffect(() => {
-        const stat = getDataStatistics(tradesData)
+        const stat = getDataStatistics(tradesData, selectedAccount.curr)
         setStats(stat)
     }, [tradesData]);
     return (
@@ -99,40 +88,42 @@ export default function Calendar() {
 
                 <div className="row g-3 mb-3">
                     <div className="col-12 col-sm-6 col-lg-3">
-                        <div className="dashboard-card">
-                            <small>Net P&L</small>
-                            <h3 className={stats?.cls}>{(stats?.totalPnl || 0)}</h3>
-                        </div>
+                        <MetricCard
+                            label='Net P&L'
+                            value={stats?.totalPnl || 0}
+                            isCurrency={true}
+                            curr={selectedAccount.curr}
+                        />
                     </div>
                     <div className="col-12 col-sm-6 col-lg-3">
-                        <div className="dashboard-card">
-                            <small>Winning Days</small>
-                            <h3>{stats?.win || 0}</h3>
-                        </div>
+                        <MetricCard
+                            label='Winning Days'
+                            value={stats?.win || 0}
+                        />
                     </div>
                     <div className="col-12 col-sm-6 col-lg-3">
-                        <div className="dashboard-card">
-                            <small>Losing Days</small>
-                            <h3>{stats?.lose || 0}</h3>
-                        </div>
+                        <MetricCard
+                            label='Losing Days'
+                            value={stats?.lose || 0}
+                        />
                     </div>
                     <div className="col-12 col-sm-6 col-lg-3">
-                        <div className="dashboard-card">
-                            <small>Win Rate</small>
-                            <h3>{stats?.winRate || 0}</h3>
-                        </div>
+                        <MetricCard
+                            label='Win Rate'
+                            value={stats?.winRate || 0}
+                        />
                     </div>
                     <div className="col-12 col-sm-6 col-lg-3">
-                        <div className="dashboard-card">
-                            <small>Avg RR</small>
-                            <h3>{stats?.riskReward || 0}</h3>
-                        </div>
+                        <MetricCard
+                            label='Avg RR'
+                            value={stats?.riskReward || 0}
+                        />
                     </div>
                     <div className="col-12 col-sm-6 col-lg-3">
-                        <div className="dashboard-card">
-                            <small>Profit Factor</small>
-                            <h3>{stats?.profitFactor || 0}</h3>
-                        </div>
+                        <MetricCard
+                            label='Profit Factor'
+                            value={stats?.profitFactor || 0}
+                        />
                     </div>
                 </div>
 

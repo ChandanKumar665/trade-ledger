@@ -1,0 +1,132 @@
+.analytics-page {
+    color: var(--bs-body-color);
+    min-width: 0;
+}
+
+.analytics-title {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.analytics-upload {
+    padding: 10px 18px;
+    font-weight: 600;
+}
+
+.analytics-file {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 10px;
+    min-width: 0;
+}
+
+.analytics-empty {
+    border: 1px dashed var(--bs-border-color);
+    border-radius: 16px;
+    background: var(--bs-tertiary-bg);
+}
+
+.analytics-empty-icon {
+    font-size: 38px;
+    color: var(--bs-primary);
+}
+
+.analytics-metric,
+.analytics-panel {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+}
+
+.analytics-chart {
+    height: 280px;
+    width: 100%;
+    position: relative;
+}
+
+.analytics-table-wrap {
+    width: 100%;
+    max-height: 560px;
+    overflow: auto;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 10px;
+}
+
+.analytics-table {
+    min-width: max-content;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.analytics-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bs-tertiary-bg);
+    font-weight: 600;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.analytics-table th,
+.analytics-table td {
+    padding: 12px 15px;
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.analytics-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+.analytics-chart-scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.analytics-chart-inner {
+    height: 300px;
+    position: relative;
+}
+
+.analytics-chart-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.analytics-chart-scroll::-webkit-scrollbar-thumb {
+    background: #aeb8c7;
+    border-radius: 10px;
+}
+
+.analytics-chart-scroll::-webkit-scrollbar-track {
+    background: #eef2f7;
+    border-radius: 10px;
+}
+
+
+@media (max-width: 767.98px) {
+    .analytics-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .analytics-panel,
+    .analytics-metric {
+        padding: 14px;
+    }
+
+    .analytics-chart {
+        height: 230px;
+    }
+
+    .analytics-title {
+        font-size: 23px;
+    }
+}

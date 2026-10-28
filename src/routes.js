@@ -3,6 +3,7 @@ import UnderConstruction from './components/404/UnderConstruction'
 import Privacy from './components/Privacy'
 import Accounts from "./components/accounts/Accounts"
 import Analytics from './components/analytics/Analytics'
+import Exchanges from './components/exchanges/Exchanges'
 import Calendar from './components/calendar/Calendar'
 import Dashboard from './components/dashboard/Dashboard'
 import Home from "./components/home/Home"
@@ -45,6 +46,13 @@ export const protectedRoutes = [
         path: '/dashboard',
         icon: 'bi bi-house-door',
         component: <Dashboard />
+    },
+    {
+        name: 'Exchanges',
+        key: 'exch',
+        path: '/exch',
+        icon: 'bi bi-plugin',
+        component: <Exchanges />
     },
     {
         name: 'Trades',
